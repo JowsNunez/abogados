@@ -1,5 +1,5 @@
 import { connection } from "./config/connection";
-import { Abogado, Cita, Cliente, Cubiculo, Demanda } from "./modelo/index";
+import { Abogado, AbogadoDao, Cita, Cliente, Cubiculo, Demanda } from "./data/modelo";
 
 class Main {
 
@@ -16,8 +16,8 @@ class Main {
 
 
     public async crearAbogado(abogado: any) {
-        const data = await Abogado.create(abogado)
-        console.log(data)
+        const data = new AbogadoDao().create(abogado)
+
     }
 
 
