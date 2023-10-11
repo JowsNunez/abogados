@@ -34,5 +34,4 @@ init.crearAbogado({
     AbogadoNombre: "Ana Gómez",
     Documentacion: "Licenciado en Derecho",
     SeguimientoDemanda: "En Proceso",
-
 });
