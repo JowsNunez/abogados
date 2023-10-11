@@ -2,7 +2,7 @@ import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize
 import { Cliente, Abogado, Cubiculo, Demanda } from './index';
 
 
-@Table({ tableName: 'Cita', freezeTableName: true,timestamps:false })
+@Table({ tableName: 'Cita', freezeTableName: true, timestamps: false })
 export class Cita extends Model<Cita> {
   @Column({
     type: DataType.INTEGER,
@@ -12,7 +12,10 @@ export class Cita extends Model<Cita> {
   idCita!: number;
 
   @Column(DataType.DATE)
-  Fecha!: Date;
+  FechaInicio!: Date;
+
+  @Column(DataType.DATE)
+  FechaFin!: Date;
 
   @ForeignKey(() => Cliente)
   @Column(DataType.NUMBER)
