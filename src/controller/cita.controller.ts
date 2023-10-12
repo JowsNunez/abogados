@@ -48,5 +48,33 @@ export class CitaController {
         }
     }
 
+    async updateCita(req: Request, res: Response) {
+        try {
+            const idCita = Number.parseInt(req.params.id)
+            const data = req.body.data
+
+            const cita = await this.citaDao.update( idCita,data)
+
+            res.json({ data: cita })
+
+        } catch (err: any) {
+            res.status(500).json({ msg: err?.message })
+        }
+    }
+   
+    async deleteCita(req:Request,res:Response){
+        try {
+            const idCita = Number.parseInt(req.params.id)
+            
+            console.log(idCita)
+            const cita = await this.citaDao.delete(idCita)
+
+            res.json({ data: cita })
+
+        } catch (err: any) {
+            res.status(500).json({ msg: err?.message })
+        }
+    }
+
 
 }

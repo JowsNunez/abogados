@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import { CitaController } from "../controller/cita.controller";
+
 export class CitasRouter {
     private router: Router;
     private citaController: CitaController
@@ -13,8 +14,8 @@ export class CitasRouter {
         this.router.get("/", this.getCitas.bind(this));
         this.router.get("/:id", this.getCita.bind(this));
         this.router.post("/", this.crearCita.bind(this));
-        this.router.put("/:id",);
-        this.router.delete("/:id",);
+        this.router.put("/:id",this.updateCita.bind(this));
+        this.router.delete("/:id",this.deleteCita.bind(this));
     }
 
     private crearCita(req: Request, res: Response) {
@@ -25,6 +26,13 @@ export class CitasRouter {
     }
     private getCitas(req: Request, res: Response) {
         return this.citaController.getCitas(req, res)
+    }
+    private updateCita(req: Request, res: Response) {
+        return this.citaController.updateCita(req, res)
+    }
+
+    private deleteCita(req: Request, res: Response){
+        return this.citaController.deleteCita(req,res)
     }
 
     public getRouter(): Router { 

@@ -114,13 +114,11 @@ export class CitaDao implements BaseDao<CitaDTO>{
     async update(id: number, data: CitaDTO): Promise<CitaDTO> {
         return new Promise(async (resolve, reject) => {
             try {
-                const [row, [cita]] = await Cita.update(data as Cita, { where: { idCita: id }, returning: true })
 
-                if (row < 0) throw new Error("No se encontró cita");
-                
-
-                resolve(cita as CitaDTO)
-
+                const row = await Cita.update(data as Cita, { where: { idCita: id } })
+               
+                if (row[0] !== 1) throw new Error("Ocurrio un error al actualizar cita o no se encontró cita");
+                resolve(data)
             } catch (err) {
                 reject(err)
             }
@@ -140,7 +138,7 @@ export class CitaDao implements BaseDao<CitaDTO>{
                 return true
 
             }
-            return false
+            throw new Error("Ocurrio un error al eliminar cita o no se encontró cita")
         } catch (err) {
             throw err
         }
