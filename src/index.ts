@@ -1,136 +1,68 @@
+require("dotenv").config()
 import { connection } from "./config/connection";
 import { CitaDao } from "./data/dao/cita.dao";
-import CitaDTO from "./data/dto/cita.dto";
-import { Abogado, AbogadoDao, Cita, Cliente, Cubiculo, Demanda } from "./data/modelo";
+import express, { Express, Router } from "express";
+import { CitaController } from "./controller/cita.controller";
+import { CitasRouter } from "./router/citas.router";
 
 class Main {
 
-    //TODO: Refactorizar
+    private server: Express
+    private citaRouter!: CitasRouter
+
+
+    constructor() {
+        this.server = express();
+
+    }
     public async connect() {
         try {
-
             await connection.authenticate()
             await connection.sync();
-        } catch (err) {
-
+        } catch (err: any) {
+            console.log(err?.message)
         }
     }
 
-
-
-    public async crearCita(cita: any) {
-        try {
-
-            const data = await new CitaDao().create(cita);
-            console.log(data)
-        } catch (err) {
-            console.error(err)
-        }
+    public configServer() {
+        this.server.use(express.json())
+        this.server.use("/citas", this.citaRouter.getRouter())
 
     }
 
+    public init() {
+        const port = process.env.PORT || 3000
+        this.server.listen(port, () => {
+            console.log('Server on port', port)
+        })
+    }
+
+    // builder
+    setCitaRouter(citaRouter: CitasRouter): Main {
+        this.citaRouter = citaRouter
+        return this
+    }
+
+    build(): Main {
+        return this
+    }
 
 
 }
 
+// Iniciar DAO'S
+const citaDao = new CitaDao()
 
+// iniciar Controllers
+const citaController = new CitaController(citaDao)
+// Iniciar Routers
+const citaRouter = new CitasRouter(citaController)
 
+//
+const main = new Main()
+    .setCitaRouter(citaRouter)
+    .build()
 
-
-
-(async () => {
-    const init = new Main()
-    init.connect()
-    // Abogado 1 cubiculo 2
-    init.crearCita({
-        Motivo: "",
-        Abogado_cita: 1,
-        Cliente_cita: 2,
-        Cubiculo_cita: 2,
-        Demanda_cita: 1,
-        Estado: "Inicio",
-        FechaInicio: new Date("2023-10-13T11:00:00-07:00")
-    } as CitaDTO)
-        .then(() => {
-
-            //ABogado 2 cubiculo 2
-            init.crearCita({
-                Motivo: "",
-                Abogado_cita: 2,
-                Cliente_cita: 2,
-                Cubiculo_cita: 2,
-                Demanda_cita: 1,
-                Estado: "Inicio",
-                FechaInicio: new Date("2023-10-13T11:00:00-07:00")
-            } as CitaDTO)
-        })
-        .then(() => {
-            // Abogado 1 cubiculo 1 misma hora
-            init.crearCita({
-                Motivo: "",
-                Abogado_cita: 1,
-                Cliente_cita: 2,
-                Cubiculo_cita: 1,
-                Demanda_cita: 1,
-                Estado: "Inicio",
-                FechaInicio: new Date("2023-10-13T11:00:00-07:00")
-            } as CitaDTO);
-
-        })
-        .then(() => {
-            // Abogado 2 cubiculo 1 misma hora
-            init.crearCita({
-                Motivo: "",
-                Abogado_cita: 2,
-                Cliente_cita: 2,
-                Cubiculo_cita: 1,
-                Demanda_cita: 1,
-                Estado: "Inicio",
-                FechaInicio: new Date("2023-10-13T11:00:00-07:00")
-            } as CitaDTO);
-        })
-        .then(() => {
-            // fecha anterior
-            init.crearCita({
-                Motivo: "",
-                Abogado_cita: 2,
-                Cliente_cita: 2,
-                Cubiculo_cita: 1,
-                Demanda_cita: 1,
-                Estado: "Inicio",
-                FechaInicio: new Date("2023-10-09T11:00:00-07:00")
-            } as CitaDTO);
-        })
-        .then(() => {
-            // dias no laborales
-            init.crearCita({
-                Motivo: "",
-                Abogado_cita: 2,
-                Cliente_cita: 2,
-                Cubiculo_cita: 1,
-                Demanda_cita: 1,
-                Estado: "Inicio",
-                FechaInicio: new Date("2023-10-21T11:00:00-07:00")
-            } as CitaDTO);
-        })
-        .then(() => {
-            // horas no laborales
-            init.crearCita({
-                Motivo: "",
-                Abogado_cita: 2,
-                Cliente_cita: 2,
-                Cubiculo_cita: 1,
-                Demanda_cita: 1,
-                Estado: "Inicio",
-                FechaInicio: new Date("2023-10-12T18:00:00-07:00")
-            } as CitaDTO);
-        })
-
-        .catch(err => console.log(err.message))
-
-
-
-
-
-
-})()
+main.connect()
+main.configServer()
+main.init()
