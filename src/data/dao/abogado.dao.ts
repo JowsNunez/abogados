@@ -8,7 +8,7 @@ export class AbogadoDao implements BaseDao<AbogadoDTO>{
 
             const abogado = await Abogado.create(data);
 
-            return data;
+            return abogado as AbogadoDTO;
 
         } catch (err) {
             throw err;
@@ -17,34 +17,23 @@ export class AbogadoDao implements BaseDao<AbogadoDTO>{
     }
     async findById(id: number): Promise<AbogadoDTO> {
         try {
-
-            const abogado = await Abogado.findByPk(id)
-            return {
-                idAbogado: abogado?.idAbogado,
-                Documentacion: abogado?.Documentacion,
-                AbogadoNombre: abogado?.AbogadoNombre,
-                SeguimientoDemanda: abogado?.SeguimientoDemanda
-            } as AbogadoDTO;
-
+            const abogado = await Abogado.findByPk(id);
+            const reqAbogado: AbogadoDTO = abogado?.dataValues as AbogadoDTO
+            if (!reqAbogado) throw new Error("No se encontró Abogado")
+            return reqAbogado
         } catch (err) {
-            throw err;
+            throw err
         }
     }
 
     async findAll(): Promise<AbogadoDTO[]> {
-        const abogados = await Abogado.findAll()
-
-        const abogadosDTO: AbogadoDTO[] = abogados.map(abogado => {
-
-            return {
-                idAbogado: abogado.idAbogado,
-                AbogadoNombre: abogado.AbogadoNombre,
-                Documentacion: abogado.Documentacion,
-                SeguimientoDemanda: abogado.SeguimientoDemanda
-            } as AbogadoDTO
-        })
-
-        return abogadosDTO;
+        try {
+            const abogados = await Abogado.findAll();
+            const abogadosDTO = abogados.map(abogado => abogado as AbogadoDTO)
+            return abogadosDTO
+        } catch (err) {
+            throw err
+        }
 
     }
     async update(id: number, data: AbogadoDTO): Promise<AbogadoDTO> {

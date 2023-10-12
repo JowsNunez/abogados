@@ -18,36 +18,22 @@ export class ClienteDao implements BaseDao<ClienteDTO>{
     }
     async findById(id: number): Promise<ClienteDTO> {
         try {
-
-            const cliente = await Cliente.findByPk(id)
-            return {
-                idCliente: cliente?.idCliente,
-                ApellidoPaterno: cliente?.ApellidoPaterno,
-                ApellidoMaterno: cliente?.ApellidoMaterno,
-                Caso: cliente?.Caso,
-                Nombre: cliente?.Nombre,
-                numCel: cliente?.numCel,
-            } as ClienteDTO;
-
+            const cliente = await Cliente.findByPk(id);
+            const reqCliente: ClienteDTO = cliente?.dataValues as ClienteDTO
+            if (!reqCliente) throw new Error("No se encontró Abogado")
+            return reqCliente
         } catch (err) {
-            throw err;
+            throw err
         }
     }
     async findAll(): Promise<ClienteDTO[]> {
-        const clientes = await Cliente.findAll()
-
-        const clientesDTO: ClienteDTO[] = clientes.map(cliente => {
-            return {
-                idCliente: cliente?.idCliente,
-                ApellidoPaterno: cliente?.ApellidoPaterno,
-                ApellidoMaterno: cliente?.ApellidoMaterno,
-                Caso: cliente?.Caso,
-                Nombre: cliente?.Nombre,
-                numCel: cliente?.numCel,
-            } as ClienteDTO;
-        })
-
-        return clientesDTO
+        try {
+            const cliente = await Cliente.findAll();
+            const clientesDTO = cliente.map(cliente => cliente as ClienteDTO)
+            return clientesDTO
+        } catch (err) {
+            throw err
+        }
     }
     async update(id: number, data: Cliente): Promise<ClienteDTO> {
         const [cliente] = await Cliente.update(data, {

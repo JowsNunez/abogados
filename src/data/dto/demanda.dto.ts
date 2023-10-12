@@ -1,5 +1,5 @@
 interface DemandaDTO {
-    idDemanda?:string
+    idDemanda?:number
     Concurrencias: string;
     Audiencias: string;
     EnvioDeOficios: string;
