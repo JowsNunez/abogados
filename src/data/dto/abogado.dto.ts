@@ -5,6 +5,7 @@ interface AbogadoDTO {
   apellidoPaterno: string;
   apellidoMaterno: string;
   cargo: string;
+  telefono: string;
 }
 
 export default AbogadoDTO;

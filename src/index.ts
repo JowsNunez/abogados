@@ -4,11 +4,15 @@ import { CitaDao } from "./data/dao/cita.dao";
 import express, { Express, Router } from "express";
 import { CitaController } from "./controller/cita.controller";
 import { CitasRouter } from "./router/citas.router";
+import { AbogadoRouter } from "./router/abogado.router";
+import { AbogadoDao } from "./data/modelo";
+import { AbogadoController } from "./controller/abogado.controller";
 
 class Main {
 
     private server: Express
     private citaRouter!: CitasRouter
+    private abogadoRouter!: AbogadoRouter
 
 
     constructor() {
@@ -27,6 +31,7 @@ class Main {
     public configServer() {
         this.server.use(express.json())
         this.server.use("/citas", this.citaRouter.getRouter())
+        this.server.use("/abogados", this.abogadoRouter.getRouter())
 
     }
 
@@ -42,6 +47,10 @@ class Main {
         this.citaRouter = citaRouter
         return this
     }
+    setAbogadoRouter(abogadoRouter: AbogadoRouter): Main {
+        this.abogadoRouter = abogadoRouter
+        return this
+    }
 
     build(): Main {
         return this
@@ -52,15 +61,19 @@ class Main {
 
 // Iniciar DAO'S
 const citaDao = new CitaDao()
+const abogadoDao = new AbogadoDao()
 
 // iniciar Controllers
 const citaController = new CitaController(citaDao)
+const abogadoController = new AbogadoController(abogadoDao)
 // Iniciar Routers
 const citaRouter = new CitasRouter(citaController)
+const abogadoRouter = new AbogadoRouter(abogadoController)
 
 //
 const main = new Main()
     .setCitaRouter(citaRouter)
+    .setAbogadoRouter(abogadoRouter)
     .build()
 
 main.connect()

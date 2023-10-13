@@ -1,5 +1,5 @@
 import AbogadoDTO from "../dto/abogado.dto";
-import { Abogado } from "../modelo";
+import { Abogado, Caso, Cita, Cliente } from "../modelo";
 import { BaseDao } from "./base.dao";
 
 export class AbogadoDao implements BaseDao<AbogadoDTO>{
@@ -17,7 +17,7 @@ export class AbogadoDao implements BaseDao<AbogadoDTO>{
     }
     async findById(id: number): Promise<AbogadoDTO> {
         try {
-            const abogado = await Abogado.findByPk(id);
+            const abogado = await Abogado.findByPk(id,{include:[{model:Cita}]});
             const reqAbogado: AbogadoDTO = abogado?.dataValues as AbogadoDTO
             if (!reqAbogado) throw new Error("No se encontró Abogado")
             return reqAbogado
