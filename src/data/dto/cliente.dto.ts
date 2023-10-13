@@ -1,10 +1,10 @@
 interface ClienteDTO {
-  idCliente?: number;
-    Nombre: string;
-    ApellidoPaterno: string;
-    ApellidoMaterno: string;
-    Caso: string;
-    numCel: number;
-  }
-  
-  export default ClienteDTO;
+
+  idCliente: number;
+  nombre: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
+  telefono: number;
+}
+
+export default ClienteDTO;

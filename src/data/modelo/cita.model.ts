@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { Cliente, Abogado, Cubiculo, Demanda } from './index';
+import { Cliente, Abogado, Cubiculo,  Caso } from './index';
 
 
 @Table({ tableName: 'Cita', freezeTableName: true, timestamps: false })
@@ -12,32 +12,33 @@ export class Cita extends Model<Cita> {
   idCita!: number;
 
   @Column(DataType.DATE)
-  FechaInicio!: Date;
+  fechaInicio!: Date;
 
   @Column(DataType.DATE)
-  FechaFin!: Date;
+  fechaFin!: Date;
 
   @ForeignKey(() => Cliente)
-  @Column(DataType.NUMBER)
-  Cliente_cita!: number;
+  @Column(DataType.INTEGER)
+  cliente_idCliente!: number;
 
   @ForeignKey(() => Abogado)
-  @Column(DataType.NUMBER)
-  Abogado_cita!: number;
+  @Column(DataType.INTEGER)
+  abogado_idAbogado!: number;
 
-  @ForeignKey(() => Demanda)
-  @Column(DataType.NUMBER)
-  Demanda_cita!: number;
+  @ForeignKey(() => Caso)
+  @Column(DataType.INTEGER)
+  caso_idCaso!: number;
 
   @ForeignKey(() => Cubiculo)
-  @Column(DataType.NUMBER)
-  Cubiculo_cita!: number;
+  @Column(DataType.INTEGER)
+  cubiculo_idCubiculo!: number;
 
   @Column(DataType.STRING)
-  Estado!: string;
+  motivo!: string;
 
-  @Column(DataType.STRING)
-  Motivo!: string;
+  @Column({type: DataType.ENUM,values:['cancelada','enCurso','concluida','programada']})
+  estado!: string;
+
 
   @BelongsTo(() => Cliente)
   cliente!: Cliente;
@@ -45,8 +46,8 @@ export class Cita extends Model<Cita> {
   @BelongsTo(() => Abogado)
   abogado!: Abogado;
 
-  @BelongsTo(() => Demanda)
-  demanda!: Demanda;
+  @BelongsTo(() => Caso)
+  caso!: Caso;
 
   @BelongsTo(() => Cubiculo)
   cubiculo!: Cubiculo;

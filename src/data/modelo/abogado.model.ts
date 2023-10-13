@@ -1,9 +1,9 @@
-import { Table, Column, Model, DataType, HasMany,PrimaryKey } from 'sequelize-typescript';
-import { Cita } from './cita.model'; 
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import { Cita } from './cita.model';
 
-@Table({ tableName: 'Abogado', freezeTableName: true ,timestamps:false})
+@Table({ tableName: 'Abogado', freezeTableName: true, timestamps: false })
 export class Abogado extends Model<Abogado> {
-  
+
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
@@ -12,13 +12,16 @@ export class Abogado extends Model<Abogado> {
   idAbogado!: number;
 
   @Column(DataType.STRING)
-  AbogadoNombre!: string;
+  nombre!: string;
 
   @Column(DataType.STRING)
-  Documentacion!: string;
+  apellidoPaterno!: string;
 
   @Column(DataType.STRING)
-  SeguimientoDemanda!: string;
+  apellidoMaterno!: string;
+
+  @Column(DataType.STRING)
+  cargo!: string;
 
   @HasMany(() => Cita)
   citas!: Cita[];

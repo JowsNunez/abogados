@@ -28,37 +28,37 @@ export class CitaDao implements BaseDao<CitaDTO>{
                 let fechaActual = new Date()
                 fechaActual = new Date(fechaActual.getTime() - (fechaActual.getTimezoneOffset() * 60000))
 
-                if (data.FechaInicio < fechaActual) {
+                if (data.fechaInicio < fechaActual) {
 
                     throw new Error('La fecha de inicio debe ser posterior a la hora y dia actual')
                 }
 
 
                 // validar si es dia laboral
-                if (data.FechaInicio.getDay() == 0 || data.FechaInicio.getDay() == 6) {
+                if (data.fechaInicio.getDay() == 0 || data.fechaInicio.getDay() == 6) {
                     throw new Error('Sólo se pueden seleccionar dias laborales')
                 }
                 // validar si es la hora se encuentra en el rango laboral
-                if (data.FechaInicio.getUTCHours() > 18 || data.FechaInicio.getUTCHours() < 8) {
+                if (data.fechaInicio.getUTCHours() > 18 || data.fechaInicio.getUTCHours() < 8) {
                     throw new Error('Fuera del rango de horas laborales')
                 }
 
                 // 30 minutos en milisegundos
                 const duracionEnMilisegundos = 30 * 60 * 1000;
 
-                const fechaInicio = data.FechaInicio;
+                const fechaInicio = data.fechaInicio;
                 // Establecer el horario de fin de la cita agregando 30 minutos al horario inicial
                 const fechaFin = new Date(fechaInicio.getTime() + duracionEnMilisegundos);
-                data.FechaFin = fechaFin
+                data.fechaFin = fechaFin
 
                 //Validar si existe una cita entre el rango de fecha
-                const citas = await this.findByFechaInicioFin(data.FechaInicio, data.FechaFin)
+                const citas = await this.findByFechaInicioFin(data.fechaInicio, data.fechaFin)
 
                 //Validar si el cubiculo o abogado tienen una cita en el horario
                 const citaExistente = citas.find(cita =>
 
-                    (cita.Cubiculo_cita === data.Cubiculo_cita)
-                    || (cita.Abogado_cita === data.Abogado_cita));
+                    (cita.cubiculo_idCubiculo === data.cubiculo_idCubiculo)
+                    || (cita.abogado_idAbogado === data.abogado_idAbogado));
 
                 if (citaExistente) {
 
@@ -116,7 +116,7 @@ export class CitaDao implements BaseDao<CitaDTO>{
             try {
 
                 const row = await Cita.update(data as Cita, { where: { idCita: id } })
-               
+
                 if (row[0] !== 1) throw new Error("Ocurrio un error al actualizar cita o no se encontró cita");
                 resolve(data)
             } catch (err) {
@@ -156,11 +156,11 @@ export class CitaDao implements BaseDao<CitaDTO>{
         const citas: Cita[] = await Cita.findAll({
             where: {
 
-                FechaInicio: {
+                fechaInicio: {
                     [Op.lt]: FechaFin,
 
                 },
-                FechaFin: {
+                fechaFin: {
                     [Op.gt]: FechaInicio
                 }
 
@@ -168,17 +168,7 @@ export class CitaDao implements BaseDao<CitaDTO>{
         })
 
         const citasDto: CitaDTO[] = citas.map(cita => {
-            return {
-                idCita: cita?.idCita,
-                Cliente_cita: cita?.Cliente_cita,
-                Abogado_cita: cita?.Abogado_cita,
-                Cubiculo_cita: cita?.Cubiculo_cita,
-                Demanda_cita: cita?.Demanda_cita,
-                Estado: cita?.Estado,
-                FechaInicio: cita?.FechaInicio,
-                FechaFin: cita?.FechaFin,
-                Motivo: cita?.Motivo
-            } as CitaDTO
+            return cita as CitaDTO
         })
 
         return citasDto

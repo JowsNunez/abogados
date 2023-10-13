@@ -1,8 +1,10 @@
 interface AbogadoDTO {
-    // idAbogado?: string
-    AbogadoNombre: string;
-    Documentacion: string;
-    SeguimientoDemanda: string;
-  }
-  
-  export default AbogadoDTO;
+
+  idAbogado: number;
+  nombre: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
+  cargo: string;
+}
+
+export default AbogadoDTO;

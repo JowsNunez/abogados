@@ -1,5 +1,6 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import { Cita } from './cita.model'; // Asegúrate de importar el modelo Cita
+import { Caso } from './caso.model';
 
 @Table({tableName:'Cliente',freezeTableName:true,timestamps:false})
 export class Cliente extends Model<Cliente> {
@@ -11,23 +12,21 @@ export class Cliente extends Model<Cliente> {
   idCliente!: number;
 
   @Column(DataType.STRING)
-  Nombre!: string;
+  nombre!: string;
 
   @Column(DataType.STRING)
-  ApellidoPaterno!: string;
+  apellidoPaterno!: string;
 
   @Column(DataType.STRING)
-  ApellidoMaterno!: string;
+  apellidoMaterno!: string;
 
-  @Column(DataType.STRING)
-  Caso!: string;
 
-  @Column({
-    type: DataType.INTEGER,
-    field: 'numCel',
-  })
-  numCel!: number;
+  @Column(DataType.INTEGER)
+  telefono!: number;
 
   @HasMany(() => Cita)
   citas!: Cita[];
+  
+  @HasMany(() => Caso)
+  casos!: Caso[];
 }

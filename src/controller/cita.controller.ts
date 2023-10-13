@@ -13,9 +13,9 @@ export class CitaController {
     async crearCita(req: Request, res: Response) {
         try {
             const data = req.body.data as Cita
-            const fecha = new Date(data.FechaInicio)
+            const fecha = new Date(data.fechaInicio)
 
-            data.FechaInicio = fecha
+            data.fechaInicio = fecha
             // const offsetHoras = fecha.getTimezoneOffset() / 60;
             // const offsetHoras2 = new Date().getTimezoneOffset() / 60;
 
