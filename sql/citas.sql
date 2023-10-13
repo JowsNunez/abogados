@@ -1,4 +1,3 @@
-
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -19,12 +18,11 @@ USE `Abogados` ;
 -- Table `Abogados`.`Cliente`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Abogados`.`Cliente` (
-  `idCliente` INT UNSIGNED NOT NULL,
-  `Nombre` VARCHAR(45) NOT NULL,
-  `ApellidoPaterno` VARCHAR(45) NOT NULL,
-  `ApellidoMaterno` VARCHAR(45) NOT NULL,
-  `Caso` VARCHAR(45) NOT NULL,
-  `numCel` INT(10) NOT NULL,
+  `idCliente` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `apellidoPaterno` VARCHAR(45) NOT NULL,
+  `apellidoMaterno` VARCHAR(45) NOT NULL,
+  `telefono` INT(10) NOT NULL,
   PRIMARY KEY (`idCliente`))
 ENGINE = InnoDB;
 
@@ -33,7 +31,7 @@ ENGINE = InnoDB;
 -- Table `Abogados`.`Cubiculo`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Abogados`.`Cubiculo` (
-  `idCubiculo` INT NOT NULL,
+  `idCubiculo` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idCubiculo`))
 ENGINE = InnoDB;
@@ -43,28 +41,37 @@ ENGINE = InnoDB;
 -- Table `Abogados`.`Abogado`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Abogados`.`Abogado` (
-  `idAbogado` INT NOT NULL,
-  `AbogadoNombre` VARCHAR(45) NOT NULL,
-  `Documentacion` VARCHAR(45) NOT NULL,
-  `SeguimientoDemanda(estatus)` VARCHAR(45) NULL,
+  `idAbogado` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `apellidoPaterno` VARCHAR(45) NOT NULL,
+  `apellidoMaterno` VARCHAR(45) NOT NULL,
+  `cargo` VARCHAR(45) NOT NULL,
+  `telefono` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idAbogado`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Abogados`.`Demanda`
+-- Table `Abogados`.`Caso`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Abogados`.`Demanda` (
-  `idDemanda` INT NOT NULL,
-  `Concurrencias` VARCHAR(45) NOT NULL,
-  `Audiencias` VARCHAR(45) NULL,
-  `EnvioDeOficios` VARCHAR(45) NULL,
-  `ContestacionDeOficios` VARCHAR(45) NULL,
-  `CitasJuzgado` DATE NULL,
-  `Decretos` VARCHAR(45) NULL,
-  `DecretosDefinitivos` VARCHAR(45) NULL,
-  `Eventos` VARCHAR(45) NULL,
-  PRIMARY KEY (`idDemanda`))
+CREATE TABLE IF NOT EXISTS `Abogados`.`Caso` (
+  `idCaso` INT NOT NULL AUTO_INCREMENT,
+  `descripcion` VARCHAR(100) NOT NULL,
+  `cliente_idCliente` INT NOT NULL,
+  `abogado_idAbogado` INT NOT NULL,
+  PRIMARY KEY (`idCaso`),
+  INDEX `fk_Caso_Cliente1_idx` (`cliente_idCliente` ASC) ,
+  INDEX `fk_Caso_Abogado1_idx` (`abogado_idAbogado` ASC) ,
+  CONSTRAINT `fk_Caso_Cliente`
+    FOREIGN KEY (`cliente_idCliente`)
+    REFERENCES `Abogados`.`Cliente` (`idCliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Caso_Abogado`
+    FOREIGN KEY (`abogado_idAbogado`)
+    REFERENCES `Abogados`.`Abogado` (`idAbogado`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -72,37 +79,57 @@ ENGINE = InnoDB;
 -- Table `Abogados`.`Cita`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Abogados`.`Cita` (
-  `idCita` INT NOT NULL,
-  `Fecha` DATE NULL,
-  `Cliente_cita` INT UNSIGNED NULL,
-  `Abogado_cita` INT NULL,
-  `Demanda_cita` INT NULL,
-  `Cubiculo_cita` INT NULL,
-  `Estado` VARCHAR(45) NULL,
-  `Motivo` VARCHAR(45) NULL,
+  `idCita` INT NOT NULL AUTO_INCREMENT,
+  `fechaInicio` DATETIME NOT NULL,
+  `fechaFin` DATETIME NOT NULL,
+  `motivo` VARCHAR(45) NOT NULL,
+  `estado` ENUM('cancelada', 'enCurso', 'concluida', 'programada') NOT NULL,
+  `cubiculo_idCubiculo` INT NOT NULL,
+  `caso_idCaso` INT NULL,
+  `abogado_idAbogado` INT NOT NULL,
+  `cliente_idCliente` INT NOT NULL,
   PRIMARY KEY (`idCita`),
-  INDEX `fk_Cliente_Cita_idx` (`Cliente_cita` ASC) ,
-  INDEX `fk_Abogado_Cita_idx` (`Abogado_cita` ASC) ,
-  INDEX `fk_Cubiculo_Cita_idx` (`Cubiculo_cita` ASC) ,
-  INDEX `fk_Demanda_Cita_idx` (`Demanda_cita` ASC) ,
-  CONSTRAINT `fk_Cliente_Cita`
-    FOREIGN KEY (`Cliente_cita`)
-    REFERENCES `Abogados`.`Cliente` (`idCliente`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Abogado_Cita`
-    FOREIGN KEY (`Abogado_cita`)
-    REFERENCES `Abogados`.`Abogado` (`idAbogado`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Cubiculo_Cita`
-    FOREIGN KEY (`Cubiculo_cita`)
+  INDEX `fk_Cita_Cubiculo1_idx` (`cubiculo_idCubiculo` ASC) ,
+  INDEX `fk_Cita_Caso1_idx` (`caso_idCaso` ASC) ,
+  INDEX `fk_Cita_Abogado1_idx` (`abogado_idAbogado` ASC) ,
+  INDEX `fk_Cita_Cliente1_idx` (`cliente_idCliente` ASC) ,
+  CONSTRAINT `fk_Cita_Cubiculo`
+    FOREIGN KEY (`cubiculo_idCubiculo`)
     REFERENCES `Abogados`.`Cubiculo` (`idCubiculo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Demanda_Cita`
-    FOREIGN KEY (`Demanda_cita`)
-    REFERENCES `Abogados`.`Demanda` (`idDemanda`)
+  CONSTRAINT `fk_Cita_Caso`
+    FOREIGN KEY (`caso_idCaso`)
+    REFERENCES `Abogados`.`Caso` (`idCaso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Cita_Abogado`
+    FOREIGN KEY (`abogado_idAbogado`)
+    REFERENCES `Abogados`.`Abogado` (`idAbogado`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Cita_Cliente`
+    FOREIGN KEY (`cliente_idCliente`)
+    REFERENCES `Abogados`.`Cliente` (`idCliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Abogados`.`Documento`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Abogados`.`Documento` (
+  `idDocumento` INT NOT NULL AUTO_INCREMENT,
+  `url` VARCHAR(45) NOT NULL,
+  `rubro` VARCHAR(45) NOT NULL,
+  `descripcion` VARCHAR(250) NOT NULL,
+  `caso_idCaso` INT NOT NULL,
+  PRIMARY KEY (`idDocumento`),
+  INDEX `fk_documento_Caso1_idx` (`caso_idCaso` ASC) ,
+  CONSTRAINT `fk_documento_Caso1`
+    FOREIGN KEY (`caso_idCaso`)
+    REFERENCES `Abogados`.`Caso` (`idCaso`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
