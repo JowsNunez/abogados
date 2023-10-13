@@ -17,58 +17,9 @@ export class CitaDao implements BaseDao<CitaDTO>{
 
             try {
 
-
-
-                // // Establecer la zonahoraria 
-                // const fechaInicioLocal = new Date(data.FechaInicio.getTime() - (data.FechaInicio.getTimezoneOffset() * 60000));
-                // data.FechaInicio = fechaInicioLocal
-
-
-                // // validar si la fecha es anterior a hoy
-                let fechaActual = new Date()
-                fechaActual = new Date(fechaActual.getTime() - (fechaActual.getTimezoneOffset() * 60000))
-
-                if (data.fechaInicio < fechaActual) {
-
-                    throw new Error('La fecha de inicio debe ser posterior a la hora y dia actual')
-                }
-
-
-                // validar si es dia laboral
-                if (data.fechaInicio.getDay() == 0 || data.fechaInicio.getDay() == 6) {
-                    throw new Error('Sólo se pueden seleccionar dias laborales')
-                }
-                // validar si es la hora se encuentra en el rango laboral
-                if (data.fechaInicio.getUTCHours() > 18 || data.fechaInicio.getUTCHours() < 8) {
-                    throw new Error('Fuera del rango de horas laborales')
-                }
-
-                // 30 minutos en milisegundos
-                const duracionEnMilisegundos = 30 * 60 * 1000;
-
-                const fechaInicio = data.fechaInicio;
-                // Establecer el horario de fin de la cita agregando 30 minutos al horario inicial
-                const fechaFin = new Date(fechaInicio.getTime() + duracionEnMilisegundos);
-                data.fechaFin = fechaFin
-
-                //Validar si existe una cita entre el rango de fecha
-                const citas = await this.findByFechaInicioFin(data.fechaInicio, data.fechaFin)
-
-                //Validar si el cubiculo o abogado tienen una cita en el horario
-                const citaExistente = citas.find(cita =>
-
-                    (cita.cubiculo_idCubiculo === data.cubiculo_idCubiculo)
-                    || (cita.abogado_idAbogado === data.abogado_idAbogado));
-
-                if (citaExistente) {
-
-                    throw new Error('Horario no disponible para cita')
-                } else {
-
-                    const cita = await Cita.create(data);
-                    resolve(cita)
-                }
-
+                const cita = await Cita.create(data);
+                resolve(cita)
+                
             } catch (err) {
                 reject(err)
             }
