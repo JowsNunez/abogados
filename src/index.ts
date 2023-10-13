@@ -7,12 +7,16 @@ import { CitasRouter } from "./router/citas.router";
 import { AbogadoRouter } from "./router/abogado.router";
 import { AbogadoDao } from "./data/modelo";
 import { AbogadoController } from "./controller/abogado.controller";
+import { CasoRouter } from "./router/caso.router";
+import { CasoDao } from "./data/dao/caso.dao";
+import { CasoController } from "./controller/caso.controller";
 
 class Main {
 
     private server: Express
     private citaRouter!: CitasRouter
     private abogadoRouter!: AbogadoRouter
+    private casoRouter!: CasoRouter
 
 
     constructor() {
@@ -32,6 +36,7 @@ class Main {
         this.server.use(express.json())
         this.server.use("/citas", this.citaRouter.getRouter())
         this.server.use("/abogados", this.abogadoRouter.getRouter())
+        this.server.use("/casos", this.casoRouter.getRouter())
 
     }
 
@@ -51,6 +56,10 @@ class Main {
         this.abogadoRouter = abogadoRouter
         return this
     }
+    setCasoRouter(casoRouter: CasoRouter): Main {
+        this.casoRouter = casoRouter
+        return this
+    }
 
     build(): Main {
         return this
@@ -62,18 +71,22 @@ class Main {
 // Iniciar DAO'S
 const citaDao = new CitaDao()
 const abogadoDao = new AbogadoDao()
+const casoDao = new CasoDao()
 
 // iniciar Controllers
 const citaController = new CitaController(citaDao)
 const abogadoController = new AbogadoController(abogadoDao)
+const casoController = new CasoController(casoDao)
 // Iniciar Routers
 const citaRouter = new CitasRouter(citaController)
 const abogadoRouter = new AbogadoRouter(abogadoController)
+const casoRouter = new CasoRouter(casoController)
 
 //
 const main = new Main()
     .setCitaRouter(citaRouter)
     .setAbogadoRouter(abogadoRouter)
+    .setCasoRouter(casoRouter)
     .build()
 
 main.connect()
