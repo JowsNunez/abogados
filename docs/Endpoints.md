@@ -1,6 +1,6 @@
 # endpoints Api abogados
 
-## Solicitudes REST
+## Solicitudes REST **Cita**
 
 ### Eliminar Cita
 
@@ -52,3 +52,43 @@
 - **URL:** `https://abogados.jandev.live/citas/{idCita}`
 - **Método:** ***GET***
 
+## Solicitudes REST **Cliente**
+
+### Obtener Cliente
+- **URL:** `https://abogados.jandev.live/clientes/{idCliente}`
+- **Método:** ***GET***
+
+### Obtener lista de Clientes
+- **URL:** `https://abogados.jandev.live/clientes`
+- **Método:** ***GET***
+
+## Solicitudes REST **Abogado**
+
+### Obtener Abogado
+- **URL:** `https://abogados.jandev.live/abogados/{idAbogado}`
+- **Método:** ***GET***
+
+### Obtener lista de Abogados
+- **URL:** `https://abogados.jandev.live/abogados`
+- **Método:** ***GET***
+
+## Solicitudes REST **Cubiculo**
+
+### Obtener Cubiculo
+- **URL:** `https://abogados.jandev.live/cubiculos/{idCubiculo}`
+- **Método:** ***GET***
+
+### Obtener lista de Cubiculos
+- **URL:** `https://abogados.jandev.live/cubiculos`
+- **Método:** ***GET***
+
+
+## Solicitudes REST **Caso**
+
+### Obtener Caso
+- **URL:** `https://abogados.jandev.live/casos/{idCasos}`
+- **Método:** ***GET***
+
+### Obtener lista de Casos
+- **URL:** `https://abogados.jandev.live/casos`
+- **Método:** ***GET***
