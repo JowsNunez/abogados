@@ -1,5 +1,5 @@
 import ClienteDTO from "../dto/cliente.dto";
-import { Cliente } from "../modelo";
+import { Cita, Cliente } from "../modelo";
 import { BaseDao } from "./base.dao";
 
 
@@ -18,7 +18,7 @@ export class ClienteDao implements BaseDao<ClienteDTO>{
     }
     async findById(id: number): Promise<ClienteDTO> {
         try {
-            const cliente = await Cliente.findByPk(id);
+            const cliente = await Cliente.findByPk(id,{include:Cita});
             const reqCliente: ClienteDTO = cliente?.dataValues as ClienteDTO
             if (!reqCliente) throw new Error("No se encontró Abogado")
             return reqCliente
