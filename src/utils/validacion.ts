@@ -24,7 +24,7 @@ const validacion = {
         }
         // validar si es la hora se encuentra en el rango laboral
         if (fecha.getUTCHours() >= 18 || fecha.getUTCHours() < 10) {
-            console.log(fecha.getUTCHours() >= 18)
+            
             aux += 1
         }
 

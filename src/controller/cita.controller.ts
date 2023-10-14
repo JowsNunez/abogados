@@ -31,9 +31,9 @@ export class CitaController {
 
             //Validar si el cubiculo o abogado tienen una cita en el horario
             const citaExistente = citas.find(cita =>
-
-                (cita.cubiculo_idCubiculo === data.cubiculo_idCubiculo)
-                || (cita.abogado_idAbogado === data.abogado_idAbogado));
+                
+                (cita.cubiculo_idCubiculo == data.cubiculo_idCubiculo)
+                || (cita.abogado_idAbogado == data.abogado_idAbogado));
 
             if (!citaExistente) {
                 const newCita: CitaDTO = await this.citaDao.create(data);
