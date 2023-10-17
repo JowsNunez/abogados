@@ -1,5 +1,5 @@
 import { CasoController } from "../controller/caso.controller";
-import { Request, Response, Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 
 
 export class CasoRouter {
@@ -12,7 +12,7 @@ export class CasoRouter {
     }
 
     private init() {
-        this.router.get('/', this.getCasos.bind(this))
+        this.router.get('/', this.getCasosByCliente.bind(this), this.getCasos.bind(this))
         this.router.get('/:id', this.getCaso.bind(this))
     }
 
@@ -21,6 +21,9 @@ export class CasoRouter {
     }
     private async getCasos(req: Request, res: Response) {
         return this.abogadoController.getCasos(req, res);
+    }
+    private async getCasosByCliente(req: Request, res: Response, next: NextFunction) {
+        return this.abogadoController.getCasosByCliente(req, res, next);
     }
 
     public getRouter(): Router {
