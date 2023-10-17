@@ -1,4 +1,4 @@
-import { Table, Column, Model, DataType, HasMany, BelongsTo, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasMany, BelongsTo, ForeignKey, AllowNull } from 'sequelize-typescript';
 import { Cita } from './cita.model'; // Asegúrate de importar el modelo Cita
 import { Cliente } from './cliente.modelo';
 import { Abogado } from './abogado.model';
@@ -12,14 +12,16 @@ export class Caso extends Model<Caso> {
         autoIncrement: true,
     })
     idCaso!: number;
-
+    @AllowNull(false)
     @Column(DataType.STRING)
     descripcion!: string;
 
+    @AllowNull(false)
     @ForeignKey(() => Cliente)
     @Column(DataType.INTEGER)
     cliente_idCliente!: number;
 
+    @AllowNull(false)
     @ForeignKey(() => Abogado)
     @Column(DataType.INTEGER)
     abogado_idAbogado!: number;

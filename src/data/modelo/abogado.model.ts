@@ -1,4 +1,4 @@
-import { Table, Column, Model, DataType, HasMany, BelongsTo } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasMany, BelongsTo, AllowNull } from 'sequelize-typescript';
 import { Cita } from './cita.model';
 import { Caso } from './caso.model';
 
@@ -8,22 +8,24 @@ export class Abogado extends Model<Abogado> {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
+    allowNull: false
   })
   idAbogado!: number;
 
+  @AllowNull(false)
   @Column(DataType.STRING)
   nombre!: string;
-
+  @AllowNull(false)
   @Column(DataType.STRING)
   apellidoPaterno!: string;
-
+  @AllowNull(false)
   @Column(DataType.STRING)
   apellidoMaterno!: string;
-
+  @AllowNull(false)
   @Column(DataType.STRING)
   cargo!: string;
-
+  @AllowNull(false)
   @Column(DataType.INTEGER)
   telefono!: string;
 

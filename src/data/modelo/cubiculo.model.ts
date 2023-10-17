@@ -1,4 +1,4 @@
-import { Table, Column, DataType, HasMany, Model } from 'sequelize-typescript';
+import { Table, Column, DataType, HasMany, Model, AllowNull } from 'sequelize-typescript';
 import { Cita } from './cita.model';
 
 
@@ -8,9 +8,11 @@ export class Cubiculo extends Model<Cubiculo> {
     type: DataType.INTEGER,
     primaryKey: true,
     autoIncrement: true,
+    allowNull:false
   })
   idCubiculo!: number
 
+  @AllowNull(false)
   @Column(DataType.STRING)
   nombre!: string
 
