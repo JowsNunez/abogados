@@ -1,3 +1,4 @@
+
 # endpoints Api abogados
 
 ## Solicitudes REST **Cita**
@@ -27,6 +28,9 @@
 - **URL:**  `https://abogados.jandev.live/citas`
 - **Método:** ***GET***
 
+### Obtener lista de Citas por fecha
+- **URL:**  `https://abogados.jandev.live/citas?fechaActual={fecha}`
+- **Método:** ***GET***
 
 
 ### Crear Cita
@@ -92,3 +96,10 @@
 ### Obtener lista de Casos
 - **URL:** `https://abogados.jandev.live/casos`
 - **Método:** ***GET***
+
+### Obtener lista de casos por cliente y abogado
+- **URL:** `https://abogados.jandev.live/casos?idCliente={_idCliente_}&idAbogado={_idAbogado_}
+- **Método:** ***GET***
+
+
+>Nota: utilizar format ISO 8601 para fechas. 
