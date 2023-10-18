@@ -21,7 +21,7 @@ jobs:
       
     - name: SSH into server
       run: |
-          expect -c "spawn ssh -i .ssh/key_rsa root@143.198.244.110
+          expect -c "spawn ssh -i key_rsa root@143.198.244.110
             expect {
               \"Enter passphrase for key\" {
                 send -- \"${{secrets.SSH_PARAFRASE}}\r\"
