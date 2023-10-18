@@ -1,12 +1,119 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>Crear Cita -- R&R Abogados y Asociados</title>
     <link rel="icon" href="img/icono.ico" type="image/x-icon">
-    <link rel="stylesheet" href="crearCita.css">
+    <link rel="stylesheet" href="css/crearCita.css">
 </head>
+
 <body>
-    <script src="Citas.js"> </script>
+
+    <header>
+        <nav>
+            <ul id="button">
+                <li class="rr"><a href="#">R&R ABOGADOS Y ASOCIADOS</a></li>
+                <li><a href="#" id="citasButton">CITAS</a></li>
+                <li><a href="#" id="expedientesButton">EXPEDIENTES</a></li>
+                <li><a href="#" id="casosButton">CASOS</a></li>
+                <li><a href="#" id="reportesButton">REPORTES</a></li>
+                <li>
+                    <form action="#" method="post">
+                        <input type="text" name="search" placeholder="Búsqueda de citas">
+                        <button type="submit">Buscar</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <h1>AGENDAR CITA</h1>
+    <div class="main-container">
+        <div class="datetime-container">
+            <h4>Selecciona fecha y hora: </h4>
+            <label for="fecha" class="datetime-label">Fecha:</label>
+            <input type="date" id="fecha" class="datetime-picker">
+            <label for="hora" class="datetime-label">Hora:</label>
+            <input type="time" id="hora" class="datetime-picker">
+        </div>
+        <div class="form-container">
+            <form class="grid-container">
+
+                <!-- Select abogado -->
+                <div class="select-container grid-item">
+                    <div class="left-align">
+                        <label for="abogado">Abogado:</label>
+                        <select id="idAbogado" required>
+                            <option selected="true" disabled="disabled">seleccione Abogado</option>
+
+                        </select>
+                    </div>
+                </div>
+                <!-- Select cliente -->
+                <div class="select-container grid-item">
+                    <div class="right-align">
+                        <label for="cliente">Selecciona un Cliente:</label>
+                        <select id="idCliente" required>
+                            <option selected="true" disabled="disabled">seleccione Cliente</option>
+
+                        </select>
+                    </div>
+                </div>
+                <!-- Select caso -->
+                <div class="select-container grid-item">
+                    <div class="right-align">
+                        <label for="caso">Selecciona un Caso:</label>
+                        <select id="idCaso" required>
+                            <option selected="true" disabled="disabled">seleccione Caso</option>
+
+                        </select>
+                    </div>
+                </div>
+                <!-- Select cubiculo -->
+                <diV class="grid-item">
+                    <div class="select-container grid-item">
+                        <div class="right-align">
+                            <label for="cubiculo">Selecciona un cubículo:</label>
+                            <select id="numeroCubiculo" required>
+                                <option selected="true" disabled="disabled">seleccione Cubiculo</option>
+
+                            </select>
+                        </div>
+                    </div>
+
+                </diV>
+                <!-- text motivo -->
+                <div class="center grid-item">
+                    <label for="motivo">Motivo:</label>
+                    <textarea id="motivo" name="motivo" rows="4" required></textarea>
+                </div>
+                <!-- Select estado -->
+                <diV class="grid-item">
+                    <div class="select-container grid-item">
+                        <div class="right-align">
+                            <label for="estado">Selecciona Estado</label>
+                            <select id="estadoCita" required>
+                                <option selected="true" disabled="disabled">seleccione el estado</option>
+                                <option value="programada">Programada</option>
+                            </select>
+                        </div>
+                    </div>
+                </diV>
+                <div class="full-width">
+                    <button type="submit" class="orange-button" id="crearCitaButton">Crear Cita</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="js/Citas.js"> </script>
+</body>
 <footer>
+    <p>Contacto</p>
+    <p>rrabogados@example.com</p>
+    <br>
+    <p>Telefono</p>
+    <p>(644) 228 9951</p>
+    <p>Sistema de gestión jurídica R&R abogados y asociados</p>
+</footer>
+
 </html>
