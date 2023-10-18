@@ -64,6 +64,7 @@ class Citas {
         await this.mostrarDatosEnSelector('casos', currentSelect.idCliente, currentSelect.idAbogado)
       }
     })
+    this.cargarCitas()
     this.mostrarDatosEnSelector('abogados')
     this.mostrarDatosEnSelector('clientes')
     this.mostrarDatosEnSelector('cubiculos')
@@ -223,7 +224,7 @@ class Citas {
       if (response.ok) {
 
         alert("Cita creada con éxito");
-        this.form.reset();
+        location.reload();
       } else {
 
         throw new Error(json.msg);
@@ -233,6 +234,41 @@ class Citas {
       alert(error)
     }
   }
+  // mostar citas pendientes
+  async cargarCitas(){
+      try{
+        const fechaActual = new Date()
+        const fechaActualHorario = new Date(fechaActual.getTime() - (fechaActual.getTimezoneOffset() * 60000))
+        const parse= fechaActualHorario.toISOString().split('T')
+        const response =await fetch(`${this.url}/citas?fechaActual=${parse[0]}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },})
+
+          const responseJson = await response.json()
+
+          if(response.ok){
+           /* responseJson.data.forEach(e=>{document.getElementById('citas').innerHTML+=`
+            <div>
+                <span>${e.motivo}</span>
+                <span>${new Date(e.fechaInicio).toUTCString()}</span>
+                <span>${new Date(e.fechaFin).toUTCString()}</span>
+                <span>${e.cubiculo_idCubiculo}</span>
+                </div>
+            `});*/
+            const pendientes =responseJson.data.filter(e=>e.estado=='programada')
+
+            console.log('citas programadas',pendientes)
+          }else{
+            throw new Error(responseJson)
+          }
+
+      }catch(err){
+        console.err(err.msg)
+      }
+  }
+
 }
 
 
