@@ -1,0 +1,43 @@
+on:
+  push: 
+    branches:
+    - main
+
+jobs:
+  build-node:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: key_ssh
+      run: | 
+        echo "${{secrets.P_SSH_KEY_ABOGADOS}}" > key_rsa
+        chmod 600 key_rsa
+        mkdir -p ~/.ssh
+        ssh-keyscan 143.198.244.110 >> ~/.ssh/known_hosts
+    - name: Install expect
+      run: sudo apt-get -y install expect
+      
+    - name: SSH into server
+      run: |
+          expect -c "spawn ssh -i .ssh/key_rsa root@143.198.244.110
+            expect {
+              \"Enter passphrase for key\" {
+                send -- \"${{secrets.SSH_PARAFRASE}}\r\"
+              }
+            }
+            expect {
+              \"${{secrets.USER_SSH}}\" {
+                send -- \"abogados/build.sh\r\"
+              }
+            }
+            expect {
+              \"${{secrets.USER_SSH}}\" {
+                send -- \"exit\r\"
+              }
+            }
+          interact"
+          
+      env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
