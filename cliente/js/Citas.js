@@ -138,8 +138,12 @@ class Citas {
   }
 
   // renderiza abogados en el selector
+
   async mostrarAbogados(data) {
+    this.selectAbogado.innerHTML = `
+    <option selected="true" disabled="disabled">seleccione Abogado</option>`
     data.forEach(abogado => {
+
       this.selectAbogado.innerHTML += `
             <option value=${abogado.idAbogado}>${abogado.nombre} ${abogado.apellidoPaterno}</option>
           `
@@ -149,6 +153,8 @@ class Citas {
 
   // renderiza clientes
   async mostrarClientes(data) {
+    this.selectCliente.innerHTML = `
+    <option selected="true" disabled="disabled">seleccione Cliente</option>`
     data.forEach(cliente => {
       this.selectCliente.innerHTML += `
         <option value=${cliente.idCliente}>${cliente.nombre} ${cliente.apellidoPaterno}</option>
@@ -158,6 +164,8 @@ class Citas {
   }
 
   async mostrarCubiculos(data) {
+    this.selectCubiculo.innerHTML = `
+    <option selected="true" disabled="disabled">seleccione Cubiculo</option>`
     data.forEach(cubiculo => {
       this.selectCubiculo.innerHTML += `
         <option value=${cubiculo.idCubiculo}>${cubiculo.nombre}</option>
@@ -166,11 +174,12 @@ class Citas {
 
   }
 
-  
+
   async mostrarCasos(data) {
+    this.selectCaso.innerHTML = `
+    <option selected="true" disabled="disabled">seleccione Caso</option>`
     data.forEach(caso => {
-      this.selectCaso.innerHTML = `
-      <option selected="true" disabled="disabled">seleccione Caso</option>
+      this.selectCaso.innerHTML += `
         <option value=${caso.idCaso}>${caso.descripcion}</option>
       `
     });
