@@ -3,7 +3,7 @@ import { Cita, Abogado, Cliente, Cubiculo, Caso, Documento } from '../data/model
 const configBd = {
   bd: process.env.BD_NAME || 'abogados',
   user: process.env.BD_USER || 'root',
-  pass: process.env.BD_PASS || 'sesamo',
+  pass: process.env.BD_PASS || '',
   host: process.env.BD_HOST || 'localhost',
   port: Number.parseInt(process.env.BD_PORT || '3306'),
 }

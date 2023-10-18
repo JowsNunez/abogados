@@ -11,20 +11,17 @@ export class CitaDao implements BaseDao<CitaDTO>{
      * @param data representa la información de la cita
      * @returns devuelve una promesa con la cita agrega o en caso contrario un error
      */
-    create(data: Cita): Promise<CitaDTO> {
-
+     create(data: Cita): Promise<CitaDTO> {
         return new Promise<CitaDTO>(async (resolve, reject) => {
-
             try {
-
                 const cita = await Cita.create(data);
-                resolve(cita)
-                
+                resolve(cita);
             } catch (err) {
-                reject(err)
+                reject(err);
             }
-        })
+        });
     }
+    
 
     /**
      * @method findById Este método se encarga de obtener una cita de acuerdo a su id
