@@ -34,7 +34,7 @@ jobs:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
     
     - name: SSH into server and execute commands
-        run: |
+      run: |
           ssh -o StrictHostKeyChecking=no -i key_rsa root@143.198.244.110 <<EOF
           cd abogados
           npm install
@@ -42,5 +42,5 @@ jobs:
           pm2 delete 0
           pm2 start dist/index.js --name abogados
           EOF
-        env:
+      env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
