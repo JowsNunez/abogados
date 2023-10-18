@@ -14,6 +14,8 @@ jobs:
       run: | 
         echo "${{secrets.P_SSH_KEY_ABOGADOS}}" > key_rsa
         chmod 600 key_rsa
+    - name: Install expect
+      run: sudo apt-get -y install expect
       
     - name: SSH into server
       run: |
