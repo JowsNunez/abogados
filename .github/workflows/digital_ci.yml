@@ -1,0 +1,36 @@
+on:
+  push: 
+    branches:
+    - main
+
+jobs:
+  build-node:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: key_ssh
+      run: | 
+        echo "${{secrets.P_SSH_KEY_ABOGADOS}}" > key_rsa
+        chmod 600 key_rsa
+      
+    - name: SSH into server
+      run: |
+          expect -c "
+          spawn ssh -i key_rsa root@143.198.244.110
+          expect {
+            \"Enter passphrase for key\" {
+              send -- \"${{ secrets.SSH_PASSPHRASE }}\r\"
+            }
+          }
+          interact
+          "
+      env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+    
+    - run: cd abogados
+    - run: npm i
+    - run: npm run build
+    - run: pm2 delete 0
+    - run: pm2 dist/index.js --name abogados
