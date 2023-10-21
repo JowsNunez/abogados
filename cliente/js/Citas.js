@@ -16,7 +16,7 @@ const convertirFechaISOString = (fecha, hora) => {
 
 class Citas {
   constructor() {
-    this.url = 'abogados.jandev.live'
+    this.url = 'https://abogados.jandev.live'
     this.initialize();
     this.form = document.querySelector("form");
 
