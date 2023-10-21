@@ -16,7 +16,7 @@ const convertirFechaISOString = (fecha, hora) => {
 
 class Citas {
   constructor() {
-    this.url = 'https://abogados.jandev.live'
+    this.url = 'http://localhost:5000'
     this.initialize();
     this.form = document.querySelector("form");
 
@@ -107,8 +107,10 @@ class Citas {
       })
       // se convierte a json
       const resJson = await response.json()
+      // si al respuesta fue 404 reinicia el selector de casos
+      if (response.status == 404)   this.mostrarCasos()
+      
       // si la respuesta fue status 200 
-
       if (response.ok) {
         const data = resJson.data
 
@@ -129,7 +131,7 @@ class Citas {
             break;
         }
 
-      } else {
+      }  else {
         throw new Error(resJson.msg)
       }
 
@@ -142,7 +144,7 @@ class Citas {
 
   async mostrarAbogados(data) {
     this.selectAbogado.innerHTML = `
-    <option selected="true" disabled="disabled">seleccione Abogado</option>`
+    <option selected="true" disabled="disabled" value="-1">seleccione Abogado</option>`
     data.forEach(abogado => {
 
       this.selectAbogado.innerHTML += `
@@ -155,7 +157,7 @@ class Citas {
   // renderiza clientes
   async mostrarClientes(data) {
     this.selectCliente.innerHTML = `
-    <option selected="true" disabled="disabled">seleccione Cliente</option>`
+    <option selected="true" disabled="disabled" value="-1">seleccione Cliente</option>`
     data.forEach(cliente => {
       this.selectCliente.innerHTML += `
         <option value=${cliente.idCliente}>${cliente.nombre} ${cliente.apellidoPaterno}</option>
@@ -166,7 +168,7 @@ class Citas {
 
   async mostrarCubiculos(data) {
     this.selectCubiculo.innerHTML = `
-    <option selected="true" disabled="disabled">seleccione Cubiculo</option>`
+    <option selected="true" disabled="disabled" value="-1">seleccione Cubiculo</option>`
     data.forEach(cubiculo => {
       this.selectCubiculo.innerHTML += `
         <option value=${cubiculo.idCubiculo}>${cubiculo.nombre}</option>
@@ -177,13 +179,17 @@ class Citas {
 
 
   async mostrarCasos(data) {
+    console.log('Aqui ')
     this.selectCaso.innerHTML = `
-    <option selected="true" disabled="disabled">seleccione Caso</option>`
-    data.forEach(caso => {
-      this.selectCaso.innerHTML += `
-        <option value=${caso.idCaso}>${caso.descripcion}</option>
-      `
-    });
+    <option selected="true" value="-1">seleccione Caso</option>`
+    if (data) {
+      data.forEach(caso => {
+        this.selectCaso.innerHTML += `
+          <option value=${caso.idCaso}>${caso.descripcion}</option>
+        `
+      });
+    }
+
   }
 
   // metodo que crea una cita 
@@ -199,9 +205,9 @@ class Citas {
     const motivo = this.textAbogado.value;
     const estado = this.selectEstado.value;
 
-    const fechaInicio = convertirFechaISOString(fecha, hora)
-
     try {
+      const fechaInicio = convertirFechaISOString(fecha, hora)
+
       const response = await fetch(`${this.url}/citas`, {
         method: "POST",
         headers: {
@@ -230,43 +236,43 @@ class Citas {
         throw new Error(json.msg);
       }
     } catch (error) {
-      console.error("Error al crear la cita:", error);
       alert(error)
     }
   }
   // mostar citas pendientes
-  async cargarCitas(){
-      try{
-        const fechaActual = new Date()
-        const fechaActualHorario = new Date(fechaActual.getTime() - (fechaActual.getTimezoneOffset() * 60000))
-        const parse= fechaActualHorario.toISOString().split('T')
-        const response =await fetch(`${this.url}/citas?fechaActual=${parse[0]}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },})
+  async cargarCitas() {
+    try {
+      const fechaActual = new Date()
+      const fechaActualHorario = new Date(fechaActual.getTime() - (fechaActual.getTimezoneOffset() * 60000))
+      const parse = fechaActualHorario.toISOString().split('T')
+      const response = await fetch(`${this.url}/citas?fechaActual=${parse[0]}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
 
-          const responseJson = await response.json()
+      const responseJson = await response.json()
 
-          if(response.ok){
-           /* responseJson.data.forEach(e=>{document.getElementById('citas').innerHTML+=`
-            <div>
-                <span>${e.motivo}</span>
-                <span>${new Date(e.fechaInicio).toUTCString()}</span>
-                <span>${new Date(e.fechaFin).toUTCString()}</span>
-                <span>${e.cubiculo_idCubiculo}</span>
-                </div>
-            `});*/
-            const pendientes =responseJson.data.filter(e=>e.estado=='programada')
+      if (response.ok) {
+        /* responseJson.data.forEach(e=>{document.getElementById('citas').innerHTML+=`
+         <div>
+             <span>${e.motivo}</span>
+             <span>${new Date(e.fechaInicio).toUTCString()}</span>
+             <span>${new Date(e.fechaFin).toUTCString()}</span>
+             <span>${e.cubiculo_idCubiculo}</span>
+             </div>
+         `});*/
+        const pendientes = responseJson.data.filter(e => e.estado == 'programada')
 
-            console.log('citas programadas',pendientes)
-          }else{
-            throw new Error(responseJson)
-          }
-
-      }catch(err){
-        console.err(err.msg)
+        console.log('citas programadas', pendientes)
+      } else {
+        throw new Error(responseJson.msg)
       }
+
+    } catch (err) {
+      console.error(err)
+    }
   }
 
 }

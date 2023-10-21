@@ -3,7 +3,7 @@
 const validacion = {
 
     isFechaValida: (fecha: Date): Boolean => {
-      
+
         let fechaActual = new Date()
         fechaActual = new Date(fechaActual.getTime() - (fechaActual.getTimezoneOffset() * 60000))
 
@@ -24,7 +24,7 @@ const validacion = {
         }
         // validar si es la hora se encuentra en el rango laboral
         if (fecha.getUTCHours() >= 18 || fecha.getUTCHours() < 10) {
-            
+
             aux += 1
         }
 
@@ -32,7 +32,7 @@ const validacion = {
 
     },
 
-    incrementarTiempo:(fecha:Date):Date=>{
+    incrementarTiempo: (fecha: Date): Date => {
         // 30 minutos en milisegundos
         const duracionEnMilisegundos = 30 * 60 * 1000;
 
@@ -40,6 +40,20 @@ const validacion = {
         // Establecer el horario de fin de la cita agregando 30 minutos al horario inicial
         const fechaFin = new Date(fechaInicio.getTime() + duracionEnMilisegundos);
         return fechaFin
+    },
+    
+    isAbogadoDisponible: (idCAbogadoAgendado: number, idAbogado: number) => {
+    
+        if (idCAbogadoAgendado == idAbogado) {
+            throw new Error('Ya cuenta con cita, seleccione otro horario')
+        }
+        return false
+    },
+    isCubiculoDisponible: (idCubiculoAgendado: number, idCubiculo: number) => {
+        if (idCubiculoAgendado == idCubiculo) {
+            throw new Error('Cúbiculo no disponible, seleccione otro horario')
+        }
+        return false
     }
 }
 
