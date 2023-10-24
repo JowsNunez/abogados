@@ -1,5 +1,5 @@
 import CitaDTO from "../dto/cita.dto";
-import { Cita } from "../modelo";
+import { Abogado, Caso, Cita, Cliente } from "../modelo";
 import { BaseDao } from "./base.dao";
 import { Op } from "sequelize";
 
@@ -112,7 +112,8 @@ export class CitaDao implements BaseDao<CitaDTO>{
                     [Op.gt]: FechaInicio
                 }
 
-            }
+            },
+            include:[Abogado,Caso,Cliente]
         })
 
         const citasDto: CitaDTO[] = citas.map(cita => {

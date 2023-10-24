@@ -113,10 +113,10 @@ export class CitaController {
         try {
             const idCita = Number.parseInt(req.params.id)
             const data = req.body.data
-
+            console.log(req.body)
             const cita = await this.citaDao.update(idCita, data)
 
-           return res.json({ data: cita })
+           return res.json({ data: cita,msg:'succes' })
 
         } catch (err: any) {
           return  res.status(500).json({ msg: err?.message })

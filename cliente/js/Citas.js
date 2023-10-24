@@ -17,31 +17,48 @@ const convertirFechaISOString = (fecha, hora) => {
 class Citas {
   constructor() {
     this.url = 'https://abogados.jandev.live'
-    this.initialize();
-    this.form = document.querySelector("form");
-
+    this.init();
   }
 
-  initialize() {
-
+  init() {
+    this.formContainer = document.querySelector(".form-container");
     // guarda la referencia de los selectores en la clase
     this.selectfecha = document.getElementById("fecha");
     this.selectHora = document.getElementById("hora");
+    this.citas = document.querySelector('.citas')
+    this.citasPendientes = document.getElementById("citasPendientes");
+
+    this.cargarCitas()
+
+    this.selectfecha.addEventListener('change', (e) => {
+      this.cargarCitas(e.target.value)
+    })
+    // Agrega manejadores de eventos para los botones y el formulario
+    const citasButton = document.getElementById("citasButton");
+    const expedientesButton = document.getElementById("expedientesButton");
+    const casasButton = document.getElementById("casasButton");
+    const reportesButton = document.getElementById("reportesButton");
+    this.btnCrearCita = document.getElementById('crearCitaButton')
+
+
+    this.btnCrearCita.addEventListener('click', () => {
+      this.formContainer.innerHTML = formCrearCita()
+      this.initializeCrear()
+
+    });
+
+  }
+
+  initializeCrear() {
+
     this.selectAbogado = document.getElementById("idAbogado");
     this.selectCliente = document.getElementById("idCliente");
     this.selectCaso = document.getElementById("idCaso");
     this.selectCubiculo = document.getElementById("numeroCubiculo");
     this.textAbogado = document.getElementById("motivo");
     this.selectEstado = document.getElementById("estadoCita");
-    this.citasPendientes = document.getElementById("citasPendientes");
-    this.citas = document.querySelector('.citas')
 
-    // Agrega manejadores de eventos para los botones y el formulario
-    const citasButton = document.getElementById("citasButton");
-    const expedientesButton = document.getElementById("expedientesButton");
-    const casasButton = document.getElementById("casasButton");
-    const reportesButton = document.getElementById("reportesButton");
-    const crearCitaButton = document.getElementById("crearCitaButton");
+    const guardarCitaButton = document.getElementById("guardarCitaButton");
 
     // cargar datos en selectores
 
@@ -66,19 +83,29 @@ class Citas {
         await this.mostrarDatosEnSelector('casos', currentSelect.idCliente, currentSelect.idAbogado)
       }
     })
-    this.cargarCitas()
     this.mostrarDatosEnSelector('abogados')
     this.mostrarDatosEnSelector('clientes')
     this.mostrarDatosEnSelector('cubiculos')
-    crearCitaButton.addEventListener("click", this.crearCita.bind(this));
-    this.selectfecha.addEventListener('change', (e) => {
-      this.cargarCitas(e.target.value)
+    guardarCitaButton.addEventListener("click", this.crearCita.bind(this));
+
+  }
+
+  initializeActualizar(idCita) {
+    this.formContainer.innerHTML = formActualizarCita()
+    this.selectCubiculo = document.getElementById("numeroCubiculo");
+    this.textAbogado = document.getElementById("motivo");
+    this.selectEstado = document.getElementById("estadoCita");
+    this.btnActualizar = document.querySelector('#actualizarCitaButton')
+
+    this.mostrarDatosEnSelector('cubiculos')
+    this.btnActualizar.addEventListener('click', (e) => {
+      this.actualizarCita(e, idCita)
     })
   }
 
   mostrarCitas(citas, fecha) {
-
-    if (!citas) {
+    console.log(citas)
+    if (!citas||citas.length===0 ) {
       this.citas.innerHTML = 'Ver citas programadas: 0 citas'
       this.citasPendientes.innerHTML = `
       <div class="cita-main-wrapper">
@@ -93,10 +120,13 @@ class Citas {
     citas.forEach(cita => {
       citasStr +=
         `<div class="cita-body">
-
+        <div class="cita-descripcion">${cita.abogado.nombre} ${cita.abogado.apellidoPaterno}</div>
         <div class="cita-descripcion">${cita.motivo}</div>
         <div class="cita-hora"> ${cita.fechaInicio.split('T')[1].split('.')[0]}</div>
         <div class="cita-cubiculo">${cita.cubiculo_idCubiculo}</div>
+        <div class="cita-cubiculo">${cita.caso.descripcion}</div>
+        <div class="cita-cubiculo">${cita.cliente.nombre} ${cita.cliente.apellidoPaterno}</div>
+
         <input class="cita-check" type="checkbox" value="${cita.idCita}" />
 
        </div>`
@@ -106,21 +136,25 @@ class Citas {
       <div class="cita-main-wrapper" id='citas'>
                      <div class="cita-wrapper">
                         <div class="cita-body">
+                        <div class="cita-descripcion"><h4>Abogado</h4></div>
                           <div class="cita-descripcion"><h4>Motivo</h4></div>
                           <div class="cita-hora"><h4>Hora</div>
                           <div class="cita-cubiculo"><h4>Cubículo</div>
+                          <div class="cita-cubiculo"><h4>Caso</div>
+                          <div class="cita-cubiculo"><h4>Cliente</div>
                           <div class="cita-check"><h4><p>Seleccionar</p></h4></div>
                       </div>
                       
                       ${citasStr}
                       </div>
-                  <div class="buttons-main-wrapper">
-                      <div class="buttons-wrapper">
-                          <button class="button-cita" id="editar">modificar</button>
-                          <button class="button-cita" id="eliminar">eliminar</button>
-                      </div>
-                  </div>
-        </div>`
+  
+        </div>
+        <div class="buttons-main-wrapper">
+        <div class="buttons-wrapper">
+            <button class="button-cita" id="editar">modificar</button>
+            <button class="button-cita" id="eliminar">eliminar</button>
+        </div>
+    </div>`
 
     this.cargarEventosChecks()
 
@@ -281,7 +315,7 @@ class Citas {
       if (response.ok) {
 
         alert("Cita creada con éxito");
-        location.reload();
+        location.href='crearCita.html'
       } else {
 
         throw new Error(json.msg);
@@ -321,7 +355,7 @@ class Citas {
         // se filtran solo las programadas
         const pendientes = responseJson.data.filter(e => e.estado == 'programada')
         // se muestran en pantalla
-        this.mostrarCitas(pendientes)
+        this.mostrarCitas(pendientes,fechaRequest)
 
 
       } else {
@@ -363,7 +397,54 @@ class Citas {
     }
 
   }
+// actualización de cita
+  async actualizarCita(event, idCita) {
+    event.preventDefault()
+    let props=0
+    const cubiculo = this.selectCubiculo.value;
+    const motivo = this.textAbogado.value;
+    const estado = this.selectEstado.value;
 
+    const data = {}
+
+    if (cubiculo!=-1) {
+      data.cubiculo = cubiculo
+      props++
+    }
+    if (motivo) {
+      data.motivo = motivo
+      props++
+    }
+    if (estado!=-1) {
+      data.estado = estado
+      props++
+    }
+
+    if(props<1){
+      alert('Para actualizar al menos debe llenar un campo')
+    }
+
+    try {
+      let response = await fetch(`${this.url}/citas/${idCita}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          data
+        }),
+        headers: {
+          'Content-type': 'application/json'
+        }
+      })
+      let resJson = await response.json()
+      if (response.ok) {
+        alert('cita actualizada correctamente')
+        location.href='crearCita.html'
+      } else {
+        throw new Error(resJson.msg)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
   cargarEventosChecks() {
     const checksCitas = document.querySelectorAll('.cita-check')
     const btnEditar = document.querySelector('#editar')
@@ -375,6 +456,7 @@ class Citas {
         console.log("debe seleccionar")
         return
       }
+      this.initializeActualizar(checked[0].value)
 
     })
     btnEliminar.addEventListener('click', (e) => {
