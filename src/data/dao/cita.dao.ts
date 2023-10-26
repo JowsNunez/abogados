@@ -62,7 +62,7 @@ export class CitaDao implements BaseDao<CitaDTO>{
     async update(id: number, data: CitaDTO): Promise<CitaDTO> {
         return new Promise(async (resolve, reject) => {
             try {
-
+                
                 const row = await Cita.update(data as Cita, { where: { idCita: id } })
 
                 if (row[0] !== 1) throw new Error("Ocurrio un error al actualizar cita o no se encontró cita");
@@ -110,7 +110,8 @@ export class CitaDao implements BaseDao<CitaDTO>{
                 },
                 fechaFin: {
                     [Op.gt]: FechaInicio
-                }
+                },
+                estado:'programada'
 
             },
             include:[Abogado,Caso,Cliente]

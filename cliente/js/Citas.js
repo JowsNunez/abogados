@@ -90,7 +90,7 @@ class Citas {
 
   }
 
-  initializeActualizar(idCita) {
+  initializeActualizar(idCita,idAbogado) {
     this.formContainer.innerHTML = formActualizarCita()
     this.selectCubiculo = document.getElementById("numeroCubiculo");
     this.textAbogado = document.getElementById("motivo");
@@ -99,12 +99,11 @@ class Citas {
 
     this.mostrarDatosEnSelector('cubiculos')
     this.btnActualizar.addEventListener('click', (e) => {
-      this.actualizarCita(e, idCita)
+      this.actualizarCita(e, idCita,idAbogado)
     })
   }
 
   mostrarCitas(citas, fecha) {
-    console.log(citas)
     if (!citas||citas.length===0 ) {
       this.citas.innerHTML = 'Ver citas programadas: 0 citas'
       this.citasPendientes.innerHTML = `
@@ -118,43 +117,50 @@ class Citas {
     let citasStr = ''
     this.citas.innerHTML = 'Ver citas programadas:  ' + citas.length + ' citas'
     citas.forEach(cita => {
+      let caso = cita.caso? cita.caso.descripcion :'No asignado'
       citasStr +=
-        `<div class="cita-body">
-        <div class="cita-descripcion">${cita.abogado.nombre} ${cita.abogado.apellidoPaterno}</div>
-        <div class="cita-descripcion">${cita.motivo}</div>
-        <div class="cita-hora"> ${cita.fechaInicio.split('T')[1].split('.')[0]}</div>
-        <div class="cita-cubiculo">${cita.cubiculo_idCubiculo}</div>
-        <div class="cita-cubiculo">${cita.caso.descripcion}</div>
-        <div class="cita-cubiculo">${cita.cliente.nombre} ${cita.cliente.apellidoPaterno}</div>
+        `
+        <tr>
+        <td> <div class="cita-descripcion">${cita.abogado.nombre} ${cita.abogado.apellidoPaterno}</div></td>
+        <td> <div class="cita-hora" value="${cita.fechaInicio}"> ${cita.fechaInicio.split('T')[1].split('.')[0]}</div></td>
+        <td> <div class="cita-descripcion">${cita.motivo}</div></td>
+        <td> <div class="cita-cubiculo">${cita.cliente.nombre} ${cita.cliente.apellidoPaterno}</div></td>
+        <td> <div class="cita-cubiculo">${cita.cubiculo_idCubiculo}</div></td>
+        <td> <div class="cita-cubiculo">${caso}</div></td>
+        <td><input class="cita-check" type="checkbox" value="${cita.idCita}" idabogado="${cita.abogado_idAbogado}" /></td>
+        </tr>
 
-        <input class="cita-check" type="checkbox" value="${cita.idCita}" />
-
-       </div>`
+       `
     })
     this.citasPendientes.innerHTML =
       `
-      <div class="cita-main-wrapper" id='citas'>
-                     <div class="cita-wrapper">
-                        <div class="cita-body">
-                        <div class="cita-descripcion"><h4>Abogado</h4></div>
-                          <div class="cita-descripcion"><h4>Motivo</h4></div>
-                          <div class="cita-hora"><h4>Hora</div>
-                          <div class="cita-cubiculo"><h4>Cubículo</div>
-                          <div class="cita-cubiculo"><h4>Caso</div>
-                          <div class="cita-cubiculo"><h4>Cliente</div>
-                          <div class="cita-check"><h4><p>Seleccionar</p></h4></div>
-                      </div>
-                      
+      <table class="cita-main-wrapper">
+      <thead id='citas'>
+                     
+                        
+                        <tr>
+                        <th>  <div class="cita-descripcion"><h4>Abogado</h4></div></th>
+                        <th>  <div class="cita-hora"><h4>Hora</div></th>
+                        <th>  <div class="cita-descripcion"><h4>Motivo</h4></div></th>
+                        <th>  <div class="cita-cubiculo"><h4>Cliente</div></th>
+                        <th>  <div class="cita-cubiculo"><h4>Cubículo</div></th>
+                        <th>  <div class="cita-cubiculo"><h4>Caso</div></th>
+                        <th>  <div class=""><h4><p>Seleccionar</p></h4></div></th></tr>
+                      </thead>
+                      <tbody >
                       ${citasStr}
-                      </div>
+                      
+                      </tbody>
   
         </div>
+        </table>
         <div class="buttons-main-wrapper">
         <div class="buttons-wrapper">
             <button class="button-cita" id="editar">modificar</button>
             <button class="button-cita" id="eliminar">eliminar</button>
         </div>
-    </div>`
+    </div>
+    `
 
     this.cargarEventosChecks()
 
@@ -264,7 +270,7 @@ class Citas {
 
 
   async mostrarCasos(data) {
-    console.log('Aqui ')
+    
     this.selectCaso.innerHTML = `
     <option selected="true" value="-1">seleccione Caso</option>`
     if (data) {
@@ -398,17 +404,18 @@ class Citas {
 
   }
 // actualización de cita
-  async actualizarCita(event, idCita) {
+  async actualizarCita(event, idCita,idAbogado) {
     event.preventDefault()
     let props=0
+    const fecha = this.selectfecha.value;
+    const hora = this.selectHora.value;
     const cubiculo = this.selectCubiculo.value;
     const motivo = this.textAbogado.value;
     const estado = this.selectEstado.value;
-
-    const data = {}
+    const data = {abogado_idAbogado:idAbogado}
 
     if (cubiculo!=-1) {
-      data.cubiculo = cubiculo
+      data.cubiculo_idCubiculo = cubiculo
       props++
     }
     if (motivo) {
@@ -419,12 +426,18 @@ class Citas {
       data.estado = estado
       props++
     }
+    if(fecha&&hora){
+      props++
+      data.fechaInicio =convertirFechaISOString(fecha, hora)
+    }
 
+    
     if(props<1){
       alert('Para actualizar al menos debe llenar un campo')
     }
 
     try {
+      this.onLoad()
       let response = await fetch(`${this.url}/citas/${idCita}`, {
         method: 'PUT',
         body: JSON.stringify({
@@ -442,7 +455,9 @@ class Citas {
         throw new Error(resJson.msg)
       }
     } catch (error) {
-      console.error(error)
+      alert(error)
+    }finally{
+      this.onDefault()
     }
   }
   cargarEventosChecks() {
@@ -453,15 +468,15 @@ class Citas {
 
     btnEditar.addEventListener('click', (e) => {
       if (checked.length < 1) {
-        console.log("debe seleccionar")
+        alert("Debe seleccionar una cita para modificar")
         return
       }
-      this.initializeActualizar(checked[0].value)
+      this.initializeActualizar(checked[0].value,checked[0].id)
 
     })
     btnEliminar.addEventListener('click', (e) => {
       if (checked.length < 1) {
-        console.log('debe seleccionar ')
+        alert('Debe seleccionar una cita para eliminar')
         return
       }
 
@@ -472,10 +487,12 @@ class Citas {
 
     checksCitas.forEach(check => {
       check.addEventListener('change', (e) => {
+       
         // si no hay un check seleccionado se agrega a la lista
         if (checked.length < 1) {
           checked.push({
-            value: e.target.value
+            value: e.target.value,
+            id: e.target.attributes["idabogado"].value
           })
         } else {
           //en caso contrario si ya hay un check dentro de la lista 

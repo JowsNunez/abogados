@@ -184,6 +184,7 @@ textarea {
 .main-container {
     min-height: 600px;
     display: flex;
+    height: auto;
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: flex-start;
@@ -198,49 +199,74 @@ footer {
     font-size: 12px;
 }
 /** Estilos donde se presentan las citas pendientes **/
-.cita-main-wrapper {
-    height: 100%;
-    display: flex;
-    width: 1000px;
-    overflow-x: auto;
-    flex-direction: column;
-    box-sizing: border-box;
-    background-color: rgb(236, 246, 255);
+.cita-main-wrapper{
+    background-color: #da5715;
+
+    padding: 5px;
     border-radius: 10px;
-    align-items: center;
-    padding: 10px;
-    margin: 15px 5px;
+    color: rgb(244, 244, 244);
+
 }
 
-.cita-body {
-    width: 100%;
+#citasPendientes{
     display: flex;
-    padding: 10px;
-    margin: 2px 0px;
-    align-items: center;
-    justify-content: space-evenly;
-    align-content: center;
-    box-sizing: border-box;
-}
-
-.cita-wrapper {
-    display: flex;
-    width: 100%;
     flex-direction: column;
+    justify-content: space-evenly;
+  
 }
-
-.cita-descripcion,.cita-hora,.cita-cubiculo,.cita-check {
-    display: flex;
-    justify-content: center;
-    margin: 1px;
-    padding: 2px;
-    width: 150px;
-    height: 20px;
-}
-.cita-check{
+table{
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     cursor: pointer;
 }
+th, td{
+    padding: 10px;
+    max-width: 180px;
+    text-align: left;
 
+}
+td{
+    color: black;
+
+}
+
+thead >tr {
+    color: rgb(240, 240, 240);
+    background-color: #f47434;
+    transition: all ease 200ms;
+
+}
+thead >tr:hover {
+    background-color: #da5715;
+    transition: all ease 200ms;
+
+}
+tr>td:last-child{
+    text-align: center;
+}
+tr{
+    background-color: #ffefdd;
+    transition: all ease 200ms;
+}
+tr:hover{
+    background-color: #ffddb7;
+}
+
+.cita-check{
+    cursor: pointer;
+    height: 20px;
+    padding: 2px;
+}
+input[type=checkbox] {
+    transform: scale(1.6);
+  }
 
 .buttons-wrapper {
     display: flex;
@@ -254,8 +280,9 @@ footer {
 
 
 .button-cita {
-    border: 2px solid rgb(14, 106, 255);
-    color: rgb(14, 106, 255);
+    border: 2px solid rgb(255, 126, 14);
+    color: rgb(255, 110, 14);
+    font-weight: bold;
     background-color: rgb(255, 255, 255);
     border-radius: 15px;
     padding: 5px;
@@ -266,7 +293,7 @@ footer {
 }
 
 .button-cita:hover {
-    background-color: rgb(237, 237, 237);
+    background-color: rgb(251, 216, 216);
 }
 
 /* Barra naranja */

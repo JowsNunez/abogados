@@ -13,18 +13,17 @@ export class CitaController {
     async crearCita(req: Request, res: Response) {
         try {
             const data = req.body.data as Cita
-            console.log('Tallegando')
             // validar campos
             // TODO: refactor
             // se cambia a undefined cuando entre el cliente y el abogado habra un primer encuentro
-            if(data.caso_idCaso==-1)  data.caso_idCaso=undefined
+            if (data.caso_idCaso == -1) data.caso_idCaso = undefined
             //
-            if(!data.cliente_idCliente||data.cliente_idCliente==-1) throw new Error('Debe seleccionar un cliente')
-            if(!data.abogado_idAbogado||data.cliente_idCliente==-1) throw new Error ('Debe seleccionar un abogado')
-            if(!data.estado||data.estado.match(/\d/)) throw new Error('Se debe seleccionar Estado')
-            if(!data.cubiculo_idCubiculo||data.cubiculo_idCubiculo==-1) throw new Error('Se debe seleccionar cúbiculo')
-            if(!data.motivo||data.motivo.match(/^\s*((^\s)?!.*)/)) throw new Error('Se debe ingresar motivo de cita')
-            if(!data.fechaInicio) throw new Error('Debe seleccionar Fecha  y hora')
+            if (!data.cliente_idCliente || data.cliente_idCliente == -1) throw new Error('Debe seleccionar un cliente')
+            if (!data.abogado_idAbogado || data.cliente_idCliente == -1) throw new Error('Debe seleccionar un abogado')
+            if (!data.estado || data.estado.match(/\d/)) throw new Error('Se debe seleccionar Estado')
+            if (!data.cubiculo_idCubiculo || data.cubiculo_idCubiculo == -1) throw new Error('Se debe seleccionar cúbiculo')
+            if (!data.motivo || data.motivo.match(/^\s*((^\s)?!.*)/)) throw new Error('Se debe ingresar motivo de cita')
+            if (!data.fechaInicio) throw new Error('Debe seleccionar Fecha  y hora')
 
             const fecha = new Date(data.fechaInicio)
 
@@ -103,9 +102,9 @@ export class CitaController {
                 return res.status(404).json({ msg: 'No se encontraron citas dentro de la fecha: ' + fechaActual })
             }
 
-           return res.json({ data: citas, msg: 'filtro' })
+            return res.json({ data: citas, msg: 'filtro' })
         } catch (err: any) {
-           return res.status(500).json({ msg: err?.message })
+            return res.status(500).json({ msg: err?.message })
         }
     }
 
@@ -113,13 +112,47 @@ export class CitaController {
         try {
             const idCita = Number.parseInt(req.params.id)
             const data = req.body.data
-            console.log(req.body)
+            
+            
+            if (data.fechaInicio) {
+
+                const fecha = new Date(data.fechaInicio)
+
+                if (!validacion.isFechaValida(fecha)) {
+                    throw new Error('La fecha de inicio debe ser posterior a la hora y dia actual')
+                }
+
+                if (!validacion.isFechaLaboral(fecha)) {
+                    throw new Error('La fecha debe ser dentro de días y horas laborales.')
+                }
+
+                data.fechaInicio = fecha
+                data.fechaFin = validacion.incrementarTiempo(fecha)
+            } else {
+                const foundCita = await Cita.findByPk(idCita)
+                data.fechaInicio = foundCita?.dataValues.fechaInicio
+                data.fechaFin = foundCita?.dataValues.fechaFin
+            }
+            
+            
+            //Validar si existe una cita entre el rango de fecha
+            const citas = await this.citaDao.findByFechaInicioFin(data.fechaInicio, data.fechaFin)
+            
+            
+            //Validar si el cubiculo o abogado tienen una cita en el horario
+            citas.find(cita =>
+                 validacion.isAbogadoDisponible(cita.abogado_idAbogado, data.abogado_idAbogado)
+                ||validacion.isCubiculoDisponible(cita.cubiculo_idCubiculo, data.cubiculo_idCubiculo));
+            
+                
+
+
             const cita = await this.citaDao.update(idCita, data)
 
-           return res.json({ data: cita,msg:'succes' })
+            return res.json({ data: cita, msg: 'succes' })
 
         } catch (err: any) {
-          return  res.status(500).json({ msg: err?.message })
+            return res.status(500).json({ msg: err?.message })
         }
     }
 
@@ -127,7 +160,7 @@ export class CitaController {
         try {
             const idCita = Number.parseInt(req.params.id)
 
-            console.log(idCita)
+            
             const cita = await this.citaDao.delete(idCita)
 
             return res.json({ data: cita })
