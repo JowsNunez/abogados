@@ -19,7 +19,7 @@ export class CitaController {
             if (data.caso_idCaso == -1) data.caso_idCaso = undefined
             //
             if (!data.cliente_idCliente || data.cliente_idCliente == -1) throw new Error('Debe seleccionar un cliente')
-            if (!data.abogado_idAbogado || data.cliente_idCliente == -1) throw new Error('Debe seleccionar un abogado')
+            if (!data.abogado_idAbogado || data.abogado_idAbogado == -1) throw new Error('Debe seleccionar un abogado')
             if (!data.estado || data.estado.match(/\d/)) throw new Error('Se debe seleccionar Estado')
             if (!data.cubiculo_idCubiculo || data.cubiculo_idCubiculo == -1) throw new Error('Se debe seleccionar cúbiculo')
             if (!data.motivo || data.motivo.match(/^\s*((^\s)?!.*)/)) throw new Error('Se debe ingresar motivo de cita')

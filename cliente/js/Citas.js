@@ -298,7 +298,7 @@ class Citas {
 
     try {
       const fechaInicio = convertirFechaISOString(fecha, hora)
-
+      this.onLoad();
       const response = await fetch(`${this.url}/citas`, {
         method: "POST",
         headers: {
@@ -328,6 +328,8 @@ class Citas {
       }
     } catch (error) {
       alert(error)
+    }finally{
+      this.onDefault();
     }
   }
   // mostar citas pendientes
@@ -379,6 +381,7 @@ class Citas {
   // eliminar cita
   async eliminarCita(id) {
     try {
+      this.onLoad()
       // se realiza una peticion http con el metodo DELETE y el parametro id
       const response = await fetch(`${this.url}/citas/${id}`, {
         method: "DELETE",
@@ -392,7 +395,7 @@ class Citas {
       if (response.ok) {
 
         alert('Cita eliminada exitosamente')
-        location.reload()
+        location.href='crearCita.html'
 
       } else {
         throw new Error(resJson.msg)
@@ -400,6 +403,8 @@ class Citas {
 
     } catch (error) {
       console.log(error)
+    }finally{
+      this.onDefault()
     }
 
   }
