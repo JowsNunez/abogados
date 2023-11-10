@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import CitaDTO from "../data/dto/cita.dto";
 import { CitaDao } from "../data/dao/cita.dao";
 import { Cita } from "../data/modelo";
-import validacion from "../utils/validacion"; '.././utils/validacion'
+import validacion from "../utils/validacion";import FieldError from "../utils/FieldError";
+ '.././utils/validacion'
 export class CitaController {
 
     private citaDao: CitaDao
@@ -18,21 +19,21 @@ export class CitaController {
             // se cambia a undefined cuando entre el cliente y el abogado habra un primer encuentro
             if (data.caso_idCaso == -1) data.caso_idCaso = undefined
             //
-            if (!data.cliente_idCliente || data.cliente_idCliente == -1) throw new Error('Debe seleccionar un cliente')
-            if (!data.abogado_idAbogado || data.abogado_idAbogado == -1) throw new Error('Debe seleccionar un abogado')
-            if (!data.estado || data.estado.match(/\d/)) throw new Error('Se debe seleccionar Estado')
-            if (!data.cubiculo_idCubiculo || data.cubiculo_idCubiculo == -1) throw new Error('Se debe seleccionar cúbiculo')
-            if (!data.motivo || data.motivo.match(/^\s*((^\s)?!.*)/)) throw new Error('Se debe ingresar motivo de cita')
-            if (!data.fechaInicio) throw new Error('Debe seleccionar Fecha  y hora')
+            if (!data.fechaInicio) throw new FieldError({msg:'Debe seleccionar Fecha  y hora',field:'fechaInicio'})
+            if (!data.abogado_idAbogado || data.abogado_idAbogado == -1) throw new FieldError({msg:'Debe seleccionar un abogado',field:'abogado'})
+            if (!data.cliente_idCliente || data.cliente_idCliente == -1) throw new FieldError({msg:'Debe seleccionar un cliente',field:'cliente'})
+            if (!data.cubiculo_idCubiculo || data.cubiculo_idCubiculo == -1) throw new FieldError({msg:'Se debe seleccionar cúbiculo',field:'cubiculo'})
+            if (!data.motivo || data.motivo.match(/^\s*((^\s)?!.*)/)) throw new FieldError({msg:'Se debe ingresar motivo de cita',field:'motivo'})
+            if (!data.estado || data.estado.match(/\d/)) throw new FieldError({msg:'Se debe seleccionar Estado',field:'estado'})
 
             const fecha = new Date(data.fechaInicio)
 
             if (!validacion.isFechaValida(fecha)) {
-                throw new Error('La fecha de inicio debe ser posterior a la hora y dia actual')
+                throw new FieldError({msg:'La fecha de inicio debe ser posterior a la hora y dia actual',field:'fecha'})
             }
 
             if (!validacion.isFechaLaboral(fecha)) {
-                throw new Error('La fecha debe ser dentro de días y horas laborales.')
+                throw new FieldError({msg:'La fecha debe ser dentro de días y horas laborales.',field:'fecha'})
             }
 
             data.fechaInicio = fecha
@@ -54,8 +55,8 @@ export class CitaController {
 
 
 
-        } catch (err: any) {
-            res.status(500).json({ msg: err.message })
+        } catch (err: any ) {
+            return res.status(500).json({ msg:err.message,data:err })
         }
 
 

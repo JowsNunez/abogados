@@ -317,3 +317,14 @@ input[type=checkbox] {
     text-decoration: none;
     
 }
+
+.is-invalid{
+    position: relative;
+    border: 3px solid rgb(255, 141, 141) ;
+    box-sizing: border-box;
+}
+
+
+.is-invalid:focus{
+    outline: none;
+}

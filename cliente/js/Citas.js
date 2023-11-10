@@ -3,9 +3,13 @@
 
 // TODO: mover a otro modulo
 const convertirFechaISOString = (fecha, hora) => {
-
-  if (!fecha) throw new Error('la fecha no debe estar vacia')
-  if (!hora) throw new Error('la hora no debe estar vacia')
+  if (!fecha){
+    handleError('fecha')
+    throw new Error('la fecha no debe estar vacia')
+  } 
+  if (!hora) {
+    handleError('fecha')
+    throw new Error('la hora no debe estar vacia')}
 
   let fechaInicio = fecha + 'T' + hora + ':00.000Z'
 
@@ -323,7 +327,11 @@ class Citas {
         alert("Cita creada con éxito");
         location.href='crearCita.html'
       } else {
-
+        if(json.data._err){
+          let err =json.data._err          
+          handleError(err.field)
+        }
+        
         throw new Error(json.msg);
       }
     } catch (error) {
@@ -402,7 +410,7 @@ class Citas {
       }
 
     } catch (error) {
-      console.log(error)
+      alert(error)
     }finally{
       this.onDefault()
     }
@@ -460,7 +468,8 @@ class Citas {
         throw new Error(resJson.msg)
       }
     } catch (error) {
-      alert(error)
+      debugger
+      alert(error.message)
     }finally{
       this.onDefault()
     }
