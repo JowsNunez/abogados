@@ -23,7 +23,7 @@ export class CitaController {
             if (!data.abogado_idAbogado || data.abogado_idAbogado == -1) throw new FieldError({msg:'Debe seleccionar un abogado',field:'abogado'})
             if (!data.cliente_idCliente || data.cliente_idCliente == -1) throw new FieldError({msg:'Debe seleccionar un cliente',field:'cliente'})
             if (!data.cubiculo_idCubiculo || data.cubiculo_idCubiculo == -1) throw new FieldError({msg:'Se debe seleccionar cúbiculo',field:'cubiculo'})
-            if (!data.motivo || data.motivo.match(/^\s*((^\s)?!.*)/)) throw new FieldError({msg:'Se debe ingresar motivo de cita',field:'motivo'})
+            if (!data.motivo || /(^\s+$)/.test(data.motivo)) throw new FieldError({msg:'Se debe ingresar motivo de cita',field:'motivo'})
             if (!data.estado || data.estado.match(/\d/)) throw new FieldError({msg:'Se debe seleccionar Estado',field:'estado'})
 
             const fecha = new Date(data.fechaInicio)
