@@ -1,6 +1,7 @@
-import { Table, Column, Model, DataType, HasMany, AllowNull } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasMany, AllowNull, NotNull } from 'sequelize-typescript';
 import { Cita } from './cita.model'; // Asegúrate de importar el modelo Cita
 import { Caso } from './caso.model';
+import { Col } from 'sequelize/types/utils';
 
 @Table({tableName:'Cliente',freezeTableName:true,timestamps:false})
 export class Cliente extends Model<Cliente> {
@@ -27,6 +28,14 @@ export class Cliente extends Model<Cliente> {
   @AllowNull(false)
   @Column(DataType.INTEGER)
   telefono!: number;
+
+  @NotNull
+  @Column(DataType.STRING)
+  domicilio!: string;
+
+  @NotNull
+  @Column(DataType.STRING)  
+  rfc!: string;
 
   @HasMany(() => Cita)
   citas!: Cita[];

@@ -5,6 +5,8 @@ interface ClienteDTO {
   apellidoPaterno: string;
   apellidoMaterno: string;
   telefono: number;
+  domicilio: string;
+  rfc: string;
 }
 
 export default ClienteDTO;
