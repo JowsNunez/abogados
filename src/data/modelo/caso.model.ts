@@ -1,4 +1,4 @@
-import { Table, Column, Model, DataType, HasMany, BelongsTo, ForeignKey, AllowNull } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasMany, BelongsTo, ForeignKey, AllowNull, NotNull } from 'sequelize-typescript';
 import { Cita } from './cita.model'; // Asegúrate de importar el modelo Cita
 import { Cliente } from './cliente.modelo';
 import { Abogado } from './abogado.model';
@@ -25,6 +25,22 @@ export class Caso extends Model<Caso> {
     @ForeignKey(() => Abogado)
     @Column(DataType.INTEGER)
     abogado_idAbogado!: number;
+
+    @NotNull
+    @Column(DataType.STRING)   
+    nombre_demandado!: string;
+
+    @NotNull
+    @Column({ type: DataType.ENUM, values: ['activo', 'inactivo', 'completo']})
+    estado!:string; 
+
+    @NotNull
+    @Column(DataType.DATE)
+    fecha_comienzo!: Date;
+    
+    @AllowNull
+    @Column(DataType.DATE)
+    fecha_cierre!: Date;
 
     @BelongsTo(() => Cliente)
     cliente!: Cliente
