@@ -26,18 +26,18 @@ export class Caso extends Model<Caso> {
     @Column(DataType.INTEGER)
     abogado_idAbogado!: number;
 
-    @NotNull
+    @AllowNull(false)
     @Column(DataType.STRING)   
     nombre_demandado!: string;
 
-    @NotNull
+    @AllowNull(false)
     @Column({ type: DataType.ENUM, values: ['activo', 'inactivo', 'completo']})
     estado!:string; 
 
-    @NotNull
+    @AllowNull(false)
     @Column(DataType.DATE)
     fecha_comienzo!: Date;
-    
+
     @AllowNull
     @Column(DataType.DATE)
     fecha_cierre!: Date;

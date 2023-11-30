@@ -4,8 +4,18 @@ import { Abogado, Caso, Cliente } from "../modelo";
 import { BaseDao } from "./base.dao";
 
 export class CasoDao implements BaseDao<CasoDTO>{
-    create(data: CasoDTO): Promise<CasoDTO> {
-        throw new Error("Method not implemented.");
+    async create(data: CasoDTO): Promise<CasoDTO> {
+       
+        const caso = await  Caso.create(data);
+        
+        return new Promise((resolve,reject)=>{
+                if(caso){
+                    resolve(caso.dataValues as CasoDTO)
+                }
+                reject(new Error("An error ocurred while creating the case"))
+        })
+
+        
     }
     async findById(id: number): Promise<CasoDTO> {
         try {
@@ -26,8 +36,22 @@ export class CasoDao implements BaseDao<CasoDTO>{
             throw err
         }
     }
-    update(id: number, data: CasoDTO): Promise<CasoDTO> {
-        throw new Error("Method not implemented.");
+    async update(id: number, data: CasoDTO): Promise<CasoDTO> {
+        const res= await Caso.update(data, {
+            where: {
+                idCaso: id
+            },
+            returning:true,
+            plain: true
+        })
+        
+        return new Promise((resolve,reject)=>{
+           
+            if(res){
+                resolve(data)
+            }
+            reject( new Error("An error ocurred while updating the case"))
+        })
     }
     delete(id: number): Promise<boolean> {
         throw new Error("Method not implemented.");

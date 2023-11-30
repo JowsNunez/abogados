@@ -9,10 +9,10 @@ interface CasoDTO {
   abogado_idAbogado: number;
 
   nombre_demandado: string;
-  
+
   estado: string;
 
-  fecha_cierre: Date;
+  fecha_cierre: Date|null;
 
   fecha_comienzo: Date;
 }

@@ -29,11 +29,11 @@ export class Cliente extends Model<Cliente> {
   @Column(DataType.INTEGER)
   telefono!: number;
 
-  @NotNull
+  @AllowNull(false)
   @Column(DataType.STRING)
   domicilio!: string;
 
-  @NotNull
+  @AllowNull(false)
   @Column(DataType.STRING)  
   rfc!: string;
 

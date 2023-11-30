@@ -5,12 +5,12 @@ import { BaseDao } from "./base.dao";
 
 export class ClienteDao implements BaseDao<ClienteDTO>{
 
-    async create(data: Cliente): Promise<ClienteDTO> {
+    async create(data: ClienteDTO): Promise<ClienteDTO> {
         try {
 
             const cliente = await Cliente.create(data);
 
-            return data;
+            return cliente.dataValues as ClienteDTO;
 
         } catch (err) {
             throw err;
@@ -35,7 +35,7 @@ export class ClienteDao implements BaseDao<ClienteDTO>{
             throw err
         }
     }
-    async update(id: number, data: Cliente): Promise<ClienteDTO> {
+    async update(id: number, data: ClienteDTO): Promise<ClienteDTO> {
         const [cliente] = await Cliente.update(data, {
             where: {
                 idCliente: id
@@ -45,8 +45,8 @@ export class ClienteDao implements BaseDao<ClienteDTO>{
     }
     async delete(id: number): Promise<any> {
         await Cliente.destroy({ where: { idCliente: id } })
-        return new Promise(() => {
-
+        return new Promise((resolve) => {
+            resolve(true)
         })
     }
 
