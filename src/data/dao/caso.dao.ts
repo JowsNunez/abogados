@@ -4,7 +4,7 @@ import { Abogado, Caso, Cliente } from "../modelo";
 import { BaseDao } from "./base.dao";
 
 export class CasoDao implements BaseDao<CasoDTO>{
-    async create(data: CasoDTO): Promise<CasoDTO> {
+    async create(data: Caso): Promise<CasoDTO> {
        
         const caso = await  Caso.create(data);
         
@@ -12,7 +12,7 @@ export class CasoDao implements BaseDao<CasoDTO>{
                 if(caso){
                     resolve(caso.dataValues as CasoDTO)
                 }
-                reject(new Error("An error ocurred while creating the case"))
+                reject(new Error("Ocurrio un error al agregar caso"))
         })
 
         
@@ -36,13 +36,12 @@ export class CasoDao implements BaseDao<CasoDTO>{
             throw err
         }
     }
-    async update(id: number, data: CasoDTO): Promise<CasoDTO> {
+    async update(id: number, data: Caso): Promise<CasoDTO> {
         const res= await Caso.update(data, {
             where: {
                 idCaso: id
             },
-            returning:true,
-            plain: true
+            returning:true
         })
         
         return new Promise((resolve,reject)=>{
@@ -50,11 +49,24 @@ export class CasoDao implements BaseDao<CasoDTO>{
             if(res){
                 resolve(data)
             }
-            reject( new Error("An error ocurred while updating the case"))
+            reject( new Error("Ocurrio un error al actualizar caso"))
         })
     }
-    delete(id: number): Promise<boolean> {
-        throw new Error("Method not implemented.");
+    async delete(id: number): Promise<any> {
+        try{
+
+            await Caso.update({ estado: 'inactivo' }, {
+                where: {
+                    idCaso: id,
+                    estado: 'activo'
+                }
+            })
+            return true
+        }catch(err){
+            throw new Error('Ocurrio un error al eliminar caso')
+        }
+        
+        
     }
     async findByClienteAndAbogado(idCliente: number,idAbogado:number): Promise<CasoDTO[]> {
         try {

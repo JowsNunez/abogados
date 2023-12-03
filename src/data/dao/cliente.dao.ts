@@ -5,7 +5,7 @@ import { BaseDao } from "./base.dao";
 
 export class ClienteDao implements BaseDao<ClienteDTO>{
 
-    async create(data: ClienteDTO): Promise<ClienteDTO> {
+    async create(data: Cliente): Promise<ClienteDTO> {
         try {
 
             const cliente = await Cliente.create(data);
@@ -20,7 +20,7 @@ export class ClienteDao implements BaseDao<ClienteDTO>{
         try {
             const cliente = await Cliente.findByPk(id,{include:Cita});
             const reqCliente: ClienteDTO = cliente?.dataValues as ClienteDTO
-            if (!reqCliente) throw new Error("No se encontró Abogado")
+            if (!reqCliente) throw new Error("No se encontró Cliente")
             return reqCliente
         } catch (err) {
             throw err
