@@ -6,6 +6,7 @@ interface ClienteDTO {
   apellidoMaterno: string;
   telefono: number;
   domicilio: string;
+  correo: string;
   rfc: string;
 }
 

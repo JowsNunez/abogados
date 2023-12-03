@@ -31,7 +31,7 @@ export class Cita extends Model<Cita> {
 
   @ForeignKey(() => Caso)
   @Column(DataType.INTEGER)
-  caso_idCaso!: number;
+  caso_idCaso!: number|undefined;
 
   @AllowNull(false)
   @ForeignKey(() => Cubiculo)

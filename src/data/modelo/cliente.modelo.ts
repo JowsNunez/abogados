@@ -36,6 +36,10 @@ export class Cliente extends Model<Cliente> {
   @AllowNull(false)
   @Column(DataType.STRING)  
   rfc!: string;
+  
+  @AllowNull(false)
+  @Column(DataType.STRING)  
+  correo!: string;
 
   @HasMany(() => Cita)
   citas!: Cita[];
