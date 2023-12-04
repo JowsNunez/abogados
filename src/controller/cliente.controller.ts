@@ -13,19 +13,20 @@ export class ClienteController {
 
     async crearCliente(req: Request, res: Response) {
         try {
+            
             const clienteDTO = req.body
-            if(clienteDTO.nombre) throw new FieldError({msg:"El nombre es obligatorio",field:'nombre'});
-            if(clienteDTO.apellidoPaterno) throw new FieldError({msg:"El apellido Paterno es obligatorio",field:'apellidoPaterno'});
-            if(clienteDTO.apellidoMaterno) throw new FieldError({msg:"El apellido Materno es obligatorio",field:'apellidoMaterno'});
-            if(clienteDTO.telefono) throw new FieldError({msg:"El telefono es obligatorio",field:'telefono'});
-            if(clienteDTO.correo) throw new FieldError({msg:"El correo es obligatorio",field:'correo'});
-            if(clienteDTO.rfc) throw new FieldError({msg:"El rfc es obligatorio",field:'rfc'});
-
+            
+            if(!clienteDTO.nombre) throw new FieldError({msg:"El nombre es obligatorio",field:'nombre'});
+            if(!clienteDTO.apellidoPaterno) throw new FieldError({msg:"El apellido Paterno es obligatorio",field:'apellidoPaterno'});
+            if(!clienteDTO.apellidoMaterno) throw new FieldError({msg:"El apellido Materno es obligatorio",field:'apellidoMaterno'});
+            if(!clienteDTO.telefono) throw new FieldError({msg:"El telefono es obligatorio",field:'telefono'});
+            if(!clienteDTO.correo) throw new FieldError({msg:"El correo es obligatorio",field:'correo'});
+            if(!clienteDTO.rfc) throw new FieldError({msg:"El rfc es obligatorio",field:'rfc'});
             const cliente = await this.clienteDao.create(clienteDTO)
             
-            res.json({ data: cliente })
+            return res.status(200).json({ data: cliente })
         } catch (err: any) {
-            res.status(500).json({ msg: err.message })
+           return res.status(500).json({ msg: err.message, data: err })
         }
     }
     async getCliente(req: Request, res: Response) {

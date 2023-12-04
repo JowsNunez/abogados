@@ -20,7 +20,7 @@ const convertirFechaISOString = (fecha, hora) => {
 
 class Citas {
   constructor() {
-    this.url = 'https://abogados.jandev.live'
+    this.url = 'http://localhost:5000'
     this.init();
   }
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Administrar Casos -- R&R Abogados y Asociados</title>
+    <link rel="icon" href="img/icono.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/casos.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul id="button">
+                <li class="rr"><a href="#">R&R ABOGADOS Y ASOCIADOS</a></li>
+                <li><a href="crearCita.html">CITAS</a></li>
+                <li><a href="#">EXPEDIENTES</a></li>
+            <li><a href="casos.html">CASOS</a></li>
+            <li><a href="clientes.html">CLIENTES</a></li>   
+
+            <li><a href="#">REPORTES</a></li>
+                <li>
+                    <form action="#" method="post">
+                        <input type="text" name="search" placeholder="Búsqueda">
+                        <button type="submit">Buscar</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <h1>DATOS DEL CASO</h1>
+    <form class="formulario">
+        <label for="estatus">Estatus del Caso:</label>
+        <select id="estatus" name="estatus">
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+            <option value="completado">Completado</option>
+        </select>
+
+        <label for="documentacion">Documentación Faltante:</label>
+        <textarea id="documentacion" name="documentacion" rows="4"></textarea>
+
+        <label for="fechas-juicio">Nombre demandado:</label>
+        <input type="text" id="fechas-juicio" name="fechas-juicio">
+
+        <button type="submit" class="orange-button">Guardar Datos</button>
+    </form>
+
+</body>
+<footer>
+    <p>Contacto</p>
+    <p>rrabogados@example.com</p>
+    <br>
+    <p>Telefono</p>
+    <p>(644) 228 9951</p>
+    <p>Sistema de gestion juridica R&R abogados y </p>
+</footer>
+</html>

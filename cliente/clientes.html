@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Administrar Casos -- R&R Abogados y Asociados</title>
+    <link rel="icon" href="img/icono.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/clientes.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul id="button">
+                <li class="rr"><a href="#">R&R ABOGADOS Y ASOCIADOS</a></li>
+                <li><a href="crearCita.html">CITAS</a></li>
+                <li><a href="#">EXPEDIENTES</a></li>
+            <li><a href="casos.html">CASOS</a></li>
+            <li><a href="clientes.html">CLIENTES</a></li>   
+
+            <li><a href="#">REPORTES</a></li>
+                <li>
+                    <form action="#" method="post">
+                        <input type="text" name="search" placeholder="Búsqueda">
+                        <button type="submit">Buscar</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <h1>CLIENTES</h1>
+    <form class="formulario" id="formulario" >
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" id="apellidos" name="apellidos" required>
+     
+
+        <label for="telefono">Número de Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono" pattern="[0-9]{10}" required>
+
+        <label for="correo">Correo Electrónico:</label>
+        <input type="email" id="correo" name="correo" required>
+
+        <label for= "rfc">RFC:</label>
+        <input type="text" id="rfc" name="rfc" pattern="[0-9,a-z]{13}" title="Ingresa 13 caracteres alfanumérico"required>
+        
+        <label for="domicilio">Domicilio:</label>
+        <input type="text" id="domicilio" name="domicilio" required>
+
+        <button type="submit" class="orange-button">Guardar Datos</button>
+    </form>
+    <script  src="js/hooks/requests.js"></script>
+    <script  src="js/clientes.js"></script>
+</body>
+<footer>
+    <p>Contacto</p>
+    <p>rrabogados@example.com</p>
+    <br>
+    <p>Telefono</p>
+    <p>(644) 228 9951</p>
+    <p>Sistema de gestion juridica R&R abogados y </p>
+</footer>
+</html>

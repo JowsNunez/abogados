@@ -1,0 +1,156 @@
+/* Estilos generales del header */
+header {
+    background-color: #fff;
+    padding: 10px 0; /* espaciado alrededor del header */
+}
+/* Estilos generales del body */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilos para el contenedor de navegación */
+#button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff; /* Fondo de la barra de navegación */
+    margin: 0 20px; /* Márgenes izquierdo y derecho de 20px */
+    padding: 5px 0; /* relleno en la parte superior e inferior */
+}
+
+/* Estilos para los elementos de navegación */
+#button li {
+    list-style-type: none;
+    display: inline;
+    margin-right: 10px; /* margen derecho entre los elementos */
+}
+
+#button li.rr a {
+    color: #f48c53;
+}
+
+#button li a {
+    text-decoration: none;
+    font-family: Arial;
+    font-size: 11px;
+    color: #000000;
+    padding: 10px;
+    background-color: #fff;
+    transition: background-color 0.3s; /*transición suave al color de fondo */
+}
+
+#button li a:hover {
+    background-color: #f48c53;
+    padding-bottom: 12px;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    #button {
+        flex-direction: column;
+    }
+
+    #button li {
+        display: block; 
+        text-align: center;
+        padding: 10px 0;
+    }
+}
+
+/* Estilos para el formulario de búsqueda */
+#button form {
+    display: flex;
+    align-items: center;
+}
+
+#button input[type="text"] {
+    width: 200px;
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+
+#button button {
+    background-color: #fff;
+    color: #000000;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+h1{
+    margin-top: 35px;
+    text-align: center;
+    font-family: Arial;
+    font-size: 25px;
+    color: #000000;
+}
+
+
+/* Estilo para el botón naranja */
+.orange-button {
+    margin-top: 20px;
+    background-color: #f47434; /* Color naranja */
+    color: #fff; /* Texto en blanco */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.orange-button:hover {
+    background-color: #f48c53; /* Cambiar el color al pasar el cursor */
+}
+
+
+main {
+    flex: 1;
+}
+
+footer {
+    background-color: #000;
+    color: #fff;
+    text-align: left;
+    padding: 20px;
+    font-size: 12px;
+    margin-top: auto;
+}
+div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formulario {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+input, select, textarea, button {
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+
+
+.is-invalid{
+    position: relative;
+    border: 3px solid rgb(255, 141, 141) ;
+    box-sizing: border-box;
+}
+
+
+.is-invalid:focus{
+    outline: none;
+}
