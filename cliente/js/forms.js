@@ -1,6 +1,6 @@
 
 
-let formCrearCita = ()=>{
+let formCrearCita = () => {
     return `
     <form class="grid-container">
 
@@ -71,7 +71,7 @@ let formCrearCita = ()=>{
     `
 }
 
-let formActualizarCita = ()=>{
+let formActualizarCita = () => {
     return `
     <form class="grid-container">
     <diV class="grid-item">
@@ -116,4 +116,65 @@ let formActualizarCita = ()=>{
 </form>
 
     `
+}
+
+let listaClientes = (clientes) => {
+    let head = `   <tr>
+    <th>Nombre</th>
+    <th>Apellido Paterno</th>
+    <th>Apellido Materno</th>
+    <th>Telefono</th>
+    <th>Domicilio</th>
+    <th>RFC</th>
+    <th>Seleccion</th>
+</tr>`
+    let body = '';
+    clientes.forEach(element => {
+        body +=
+
+            `<tr>
+    <td>${element.nombre}</td>
+    <td>${element.apellidoPaterno}</td>
+    <td>${element.apellidoMaterno} </td>
+    <td>${element.telefono}</td>
+    <td>${element.domicilio}</td>
+    <td>${element.rfc}</td>
+    <td><input type="checkbox"></td>
+    </tr>
+`
+       
+    });
+
+    return { head, body };
+}
+
+let listaCasos = (casos) => {
+    const head = ` 
+    <tr>
+    <th>Abogado</th>
+    <th>Cliente</th>
+    <th>Nombre Demandado</th>
+    <th>Descripción</th>
+    <th>Fecha Comienzo</th>
+    <th>Estado</th>
+    <th>Documentación</th>
+    <th>Seleccion</th>
+    </tr>
+`
+    let body = '';
+    casos.forEach(caso => {
+        body += ` 
+         <td>${caso.abogado_idAbogado}</td>
+        <td>${caso.cliente_idCliente}</td>
+        <td>${caso.nombre_demandado} </td>
+        <td>${caso.descripcion}</td>
+        <td>${caso.fecha_comienzo}</td>
+        <td>${caso.estado}</td>
+        <td><a>waos</a></td>
+        <td><input type="checkbox"></td>
+        </tr>`
+
+    });
+
+    return { head, body }
 }

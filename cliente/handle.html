@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/casos.css">
+
+</head>
+
+<body>
+    <header id="heroes"></header>
+    <div id="content">
+        <table class="wrapper">
+            <thead id='main-table'>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+        <div class="buttons-main-wrapper">
+            <div class="buttons-wrapper">
+                <button class="button-cita" id="editar">modificar</button>
+                <button class="button-cita" id="eliminar">eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/hooks/requests.js"></script>
+    <script src="js/forms.js"></script>
+    <script>
+        let query = window.location.search;
+        let params = new URLSearchParams(query);
+        let action = params.get('action');
+        let q = params.get('q');
+        let Thead = document.getElementById('main-table');
+        let Tbody = document.getElementById('table-body');
+
+
+        if (action === 'actualizar') {
+            if (q === 'casos') {
+                (async () => {
+
+
+                    data = await httpGetCasos()
+                    const { head, body } = listaCasos(data.data);
+                    Thead.innerHTML = head;
+                    Tbody.innerHTML = body;
+
+
+                })();
+
+            }
+            if (q === 'clientes') {
+                (async () => {
+
+
+                    data = await httpGetClientes()
+                    const { head, body } = listaClientes(data.data);
+                    Thead.innerHTML = head;
+                    Tbody.innerHTML = body;
+
+                })();
+            }
+
+        }
+
+
+
+
+    </script>
+</body>
+<footer>
+    <p>Contacto</p>
+    <p>rrabogados@example.com</p>
+    <br>
+    <p>Telefono</p>
+    <p>(644) 228 9951</p>
+    <p>Sistema de gestion juridica R&R abogados y </p>
+</footer>
+
+</html>
