@@ -27,23 +27,21 @@
         </nav>
     </header>
     <h1>DATOS DEL CASO</h1>
-    <form class="formulario">
-        <label for="estatus">Estatus del Caso:</label>
-        <select id="estatus" name="estatus">
+    <form class="formulario" id="crearCaso">
+        <label for="estado">Estatus del Caso:</label>
+        <select id="estado" name="estado">
             <option value="activo">Activo</option>
-            <option value="inactivo">Inactivo</option>
-            <option value="completado">Completado</option>
         </select>
-
-        <label for="documentacion">Documentación Faltante:</label>
-        <textarea id="documentacion" name="documentacion" rows="4"></textarea>
-
-        <label for="fechas-juicio">Nombre demandado:</label>
-        <input type="text" id="fechas-juicio" name="fechas-juicio">
-
+     
+        <label for="nombre_demandado">Nombre demandado:</label>
+        <input type="text" id="nombre_demandado" name="nombre_demandado ">
+        
+        <label for="documentacion">Documentación</label>
+        <input id="documentacion" name="documentacion" rows="4" type="file"></input>
         <button type="submit" class="orange-button">Guardar Datos</button>
     </form>
-
+    <script  src="js/hooks/requests.js"></script>
+    <script  src="js/casos.js"></script>
 </body>
 <footer>
     <p>Contacto</p>
