@@ -42,12 +42,11 @@
             if (q === 'casos') {
                 (async () => {
 
-
                     data = await httpGetCasos()
                     const { head, body } = listaCasos(data.data);
                     Thead.innerHTML = head;
                     Tbody.innerHTML = body;
-
+                    cargarEventosChecks(q);
 
                 })();
 
@@ -60,6 +59,7 @@
                     const { head, body } = listaClientes(data.data);
                     Thead.innerHTML = head;
                     Tbody.innerHTML = body;
+                    cargarEventosChecks(q);
 
                 })();
             }

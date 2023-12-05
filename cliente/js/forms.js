@@ -129,17 +129,17 @@ let listaClientes = (clientes) => {
     <th>Seleccion</th>
 </tr>`
     let body = '';
-    clientes.forEach(element => {
+    clientes.forEach(cliente => {
         body +=
 
             `<tr>
-    <td>${element.nombre}</td>
-    <td>${element.apellidoPaterno}</td>
-    <td>${element.apellidoMaterno} </td>
-    <td>${element.telefono}</td>
-    <td>${element.domicilio}</td>
-    <td>${element.rfc}</td>
-    <td><input type="checkbox"></td>
+    <td>${cliente.nombre}</td>
+    <td>${cliente.apellidoPaterno}</td>
+    <td>${cliente.apellidoMaterno} </td>
+    <td>${cliente.telefono}</td>
+    <td>${cliente.domicilio}</td>
+    <td>${cliente.rfc}</td>
+    <td><input class='check' clientes='${cliente.idCliente}' value='${cliente.idCliente}' type="checkbox"></td>
     </tr>
 `
        
@@ -171,10 +171,74 @@ let listaCasos = (casos) => {
         <td>${caso.fecha_comienzo}</td>
         <td>${caso.estado}</td>
         <td><a>waos</a></td>
-        <td><input type="checkbox"></td>
+        <td><input class='check' casos='${caso.idCaso}' value='${caso.idCaso}' type="checkbox"></td>
         </tr>`
 
     });
 
     return { head, body }
 }
+
+let cargarEventosChecks=(param)=> {
+    const checksList = document.querySelectorAll('.check')
+    const btnEditar = document.querySelector('#editar')
+    const btnEliminar = document.querySelector('#eliminar')
+    let checked = []
+    let handleActualizar = (id) => {
+        
+    }
+    let handleEliminar= async (id)=>{
+        if(param=='clientes'){
+            return await httpEliminarCliente(id)
+        }
+        if(param=='casos'){
+           return await httpEliminarCaso(id)
+            
+        }
+        
+    }
+    btnEditar.addEventListener('click', (e) => {
+      if (checked.length < 1) {
+        alert("Debe seleccionar una cita para modificar")
+        return
+      }
+      handleActualizar(checked[0].id)
+
+    })
+    btnEliminar.addEventListener('click', (e) => {
+      if (checked.length < 1) {
+        alert('Debe seleccionar una cita para eliminar')
+        return
+      }
+      console.log(checked)
+      let selection = confirm('Desea eliminar '+ param)
+      handleEliminar(checked[0].value).then((data)=>{
+            console.log(data)
+       })
+    })
+
+
+    checksList.forEach(check => {
+      check.addEventListener('change', (e) => {
+       
+        // si no hay un check seleccionado se agrega a la lista
+        if (checked.length < 1) {
+            console.log(e)
+          checked.push({
+            value: e.target.value,
+            id: e.target.attributes[param].value
+          })
+        } else {
+          //en caso contrario si ya hay un check dentro de la lista 
+          // si es igual se elimina de la lista
+          if (checked[0].value == e.target.value) {
+            checked.pop()
+          }
+          // se establece el valor del check a false 
+          e.target.checked = false
+        }
+
+      })
+
+    })
+  }
