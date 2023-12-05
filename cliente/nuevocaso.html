@@ -29,9 +29,8 @@
     <h1>DAR DE ALTA NUEVO CASO</h1>
     <form action="datosdelcaso.html" method="get" class="formulario">
         <label for="cliente">Seleccionar Cliente:</label>
-        <select id="cliente" name="cliente">
-            <option value="1">Cliente 1</option>
-            <option value="2">Cliente 2</option>
+        <select id="idCliente" name="cliente">
+          
 
         </select>
 
@@ -40,6 +39,19 @@
 
         <button type="submit" class="orange-button">Guardar Datos</button>
     </form>
+    <script  src="js/utils.js">
+    </script>
+    <script  src="js/hooks/requests.js">
+        
+    </script>
+    <script>
+        (async ()=>{
+
+            const data = await httpGetClientes()
+            mostrarCliente(data)
+        })();
+    </script>
+
 </body>
 <footer>
     <p>Contacto</p>

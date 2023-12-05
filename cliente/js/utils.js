@@ -49,3 +49,17 @@ function handleInput(input){
         input.focus();
    
 }
+
+async function mostrarCliente(data){
+    console.log(data.data)
+    // renderiza clientes
+    const selector = document.getElementById('idCliente');
+    selector.innerHTML = `
+    <option selected="true" disabled="disabled" value="-1">seleccione Cliente</option>`
+    data.data.forEach(cliente => {
+      selector.innerHTML += `
+        <option value=${cliente.idCliente}>${cliente.nombre} ${cliente.apellidoPaterno}</option>
+      `
+    });
+
+}
