@@ -80,12 +80,12 @@ export class CasoController {
         try {
             const caso:Caso = req.body
             const idCaso:number= Number.parseInt(req.params.id);
-            if(caso.abogado_idAbogado) throw new FieldError({msg:"El id del abogado es obligatorio",field:'abogado_idAbogado'});
-            if(caso.cliente_idCliente) throw new FieldError({msg:"El id del cliente es obligatorio",field:'cliente_idCliente'});
-            if(caso.descripcion) throw new FieldError({msg:"La descripcion es obligatoria",field:'descripcion'});
-            if(caso.estado) throw new FieldError({msg:"El estado es obligatorio",field:'estado'});
-            if(caso.fecha_comienzo) throw new FieldError({msg:"La fecha de inicio es obligatoria",field:'fechaComienzo'});
-            if(caso.nombre_demandado) throw new FieldError({msg:"El nombre del demandado es obligatorio",field:'nombre_demandado'});
+            if(!caso.abogado_idAbogado) throw new FieldError({msg:"El id del abogado es obligatorio",field:'abogado_idAbogado'});
+            if(!caso.cliente_idCliente) throw new FieldError({msg:"El id del cliente es obligatorio",field:'cliente_idCliente'});
+            if(!caso.descripcion) throw new FieldError({msg:"La descripcion es obligatoria",field:'descripcion'});
+            if(!caso.estado) throw new FieldError({msg:"El estado es obligatorio",field:'estado'});
+            if(!caso.fecha_comienzo) throw new FieldError({msg:"La fecha de inicio es obligatoria",field:'fechaComienzo'});
+            if(!caso.nombre_demandado) throw new FieldError({msg:"El nombre del demandado es obligatorio",field:'nombre_demandado'});
             
             const newCaso = await this.casoDao.update(idCaso,caso)
             return res.status(200).json({ data: newCaso })

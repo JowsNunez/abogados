@@ -4,7 +4,7 @@ interface CitaDTO {
   fechaFin: Date;
   cliente_idCliente: number;
   abogado_idAbogado: number;
-  caso_idCaso: number;
+  caso_idCaso: number|undefined;
   cubiculo_idCubiculo: number;
   motivo: string;
   estado: string;

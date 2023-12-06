@@ -5,44 +5,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actualizar</title>
-    <link rel="stylesheet" href="css/casos.css">
+    <link rel="stylesheet" href="../css/casos.css">
 
 </head>
 
 <body>
     <header id="heroes"></header>
 
-
+    <h1>Actualizar Caso</h1>
     <form class="formulario" id="formulario">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required>
-        <label for="apellidos">Apellidos:</label>
-        <input type="text" id="apellidos" name="apellidos" required>
+        <label for="cliente">Seleccionar Cliente:</label>
+        <select id="idCliente" name="cliente">
 
 
-        <label for="telefono">Número de Teléfono:</label>
-        <input type="tel" id="telefono" name="telefono" pattern="[0-9]{10}" required>
+        </select>
 
-        <label for="correo">Correo Electrónico:</label>
-        <input type="email" id="correo" name="correo" required>
+        <label for="descripcion">Descripción del Caso:</label>
+        <textarea id="descripcion" name="descripcion" rows="4"></textarea>
+        <label for="estado">Estatus del Caso:</label>
+        <select id="estado" name="estado">
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+            <option value="completado">Completado</option>
 
-        <label for="rfc">RFC:</label>
-        <input type="text" id="rfc" name="rfc" pattern="[0-9,a-z]{13}" title="Ingresa 13 caracteres alfanumérico"
-            required>
+        </select>
 
-        <label for="domicilio">Domicilio:</label>
-        <input type="text" id="domicilio" name="domicilio" required>
+        <label for="nombre_demandado">Nombre demandado:</label>
+        <input type="text" id="nombre_demandado" name="nombre_demandado ">
+
+        <label for="documentacion">Documentación</label>
+        <input id="documentacion" name="documentacion" rows="4" type="file"></input>
 
         <button type="submit" class="orange-button">Actualizar Datos</button>
     </form>
 
 
 
-    <script src="js/utils.js"></script>
-    <script src="js/hooks/requests.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/hooks/requests.js"></script>
     <script>
 
-       
+        let queries = window.location.search;
+        let params = new URLSearchParams(queries);
+        let id = params.get('id');
+        async function cargarCaso() {
+
+
+
+
+            const { data } = await httpGetCaso(id);
+           const clientes= await httpGetClientes();
+         
+           await mostrarCliente(clientes);
+
+            if (data) {
+                document.getElementById('idCliente').value = data.cliente_idCliente;
+                document.getElementById('estado').value = data.estado;
+                document.getElementById('nombre_demandado').value = data.nombre_demandado;
+                document.getElementById('descripcion').value = data.descripcion;
+
+
+            }
+        }
+
+        window.addEventListener('onload', cargarCaso());
+
+        const form = document.getElementById('formulario');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log(params)
+            if (params.size === 0) {
+                window.history.back();
+            }
+            const data = {
+                nombre_demandado: form.nombre_demandado.value,
+                cliente_idCliente: form.idCliente.value,
+                abogado_idAbogado: '1',
+                descripcion: form.descripcion.value,
+                estado: form.estado.value,
+                fecha_comienzo: Date.now()
+            }
+            console.log(data)
+
+            const response = await httpActualizarCaso(id,data);
+
+            console.log(response)
+            if (response.msg) {
+                const err = response.data._err;
+                let { field } = err;
+                let input;
+                if (field == 'descripcion' || field == 'cliente_idCliente') {
+                    alert('Debe seleccionar o ingresar en el campo: ' + field);
+                    window.history.back();
+                } else {
+
+                    input = document.getElementById(field);
+                }
+                if (input) {
+                    input.classList.add('is-invalid');
+                }
+                return;
+            }
+
+            alert('Caso actualizado correctamente');
+            form.reset();
+
+
+        });
 
 
 

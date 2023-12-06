@@ -72,6 +72,16 @@ async function httpCrearCaso(body) {
     const data = await response.json();
     return data;
 }
+async function httpGetCaso(id){
+    const response = await fetch(url+'/casos/'+id, {
+        method: 'GET',
+        headers: {
+            'Content-Type':'application/json'
+        }
+    });
+    const data = await response.json();
+    return data;
+}
 async function httpGetCasos(){
     const response = await fetch(url+'/casos', {
         method: 'GET',

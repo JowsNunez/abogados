@@ -51,7 +51,6 @@ function handleInput(input){
 }
 
 async function mostrarCliente(data){
-    console.log(data.data)
     // renderiza clientes
     const selector = document.getElementById('idCliente');
     selector.innerHTML = `
