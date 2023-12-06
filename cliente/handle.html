@@ -6,11 +6,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css/casos.css">
+    <style>
+       
+table{
+    border-radius: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-bottom: 20px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+th, td{
+    padding: 10px;
+    text-align: left;
 
+}
+td{
+    color: black;
+
+}
+
+thead >tr {
+    color: rgb(240, 240, 240);
+    background-color: #f47434;
+    transition: all ease 200ms;
+
+}
+thead >tr:hover {
+    background-color: #da5715;
+    transition: all ease 200ms;
+
+}
+tr>td:last-child{
+    text-align: center;
+}
+tr{
+    background-color: #ffefdd;
+    transition: all ease 200ms;
+}
+tr:hover{
+    background-color: #ffddb7;
+}
+
+/* Estilo para el botón naranja */
+.orange-button {
+    margin-top: 20px;
+    background-color: #f47434; /* Color naranja */
+    color: #fff; /* Texto en blanco */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.orange-button:hover {
+    background-color: #f48c53; /* Cambiar el color al pasar el cursor */
+}
+
+.buttons-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.orange-button{
+    margin: 3px;
+}
+
+        
+    </style>
 </head>
 
 <body>
     <header id="heroes"></header>
+    <h1 id="title"></h1>
     <div id="content">
         <table class="wrapper">
             <thead id='main-table'>
@@ -20,8 +93,8 @@
         </table>
         <div class="buttons-main-wrapper">
             <div class="buttons-wrapper">
-                <button class="button-cita" id="editar">modificar</button>
-                <button class="button-cita" id="eliminar">eliminar</button>
+                <button class="orange-button" id="editar">modificar</button>
+                <button class="orange-button" id="eliminar">eliminar</button>
             </div>
         </div>
     </div>
@@ -34,14 +107,15 @@
         let params = new URLSearchParams(query);
         let action = params.get('action');
         let q = params.get('q');
+        let title = document.getElementById('title');
         let Thead = document.getElementById('main-table');
         let Tbody = document.getElementById('table-body');
 
 
         if (action === 'actualizar') {
             if (q === 'casos') {
-                (async () => {
-
+                title.textContent = 'Casos';
+                (async () => {                   
                     data = await httpGetCasos()
                     const { head, body } = listaCasos(data.data);
                     Thead.innerHTML = head;
@@ -52,6 +126,8 @@
 
             }
             if (q === 'clientes') {
+                title.textContent = 'Clientes';
+
                 (async () => {
 
 

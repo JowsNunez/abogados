@@ -164,8 +164,8 @@ let listaCasos = (casos) => {
     let body = '';
     casos.forEach(caso => {
         body += ` 
-         <td>${caso.abogado_idAbogado}</td>
-        <td>${caso.cliente_idCliente}</td>
+        <td>${caso.abogado.nombre} ${caso.abogado.apellidoPaterno} ${caso.abogado.apellidoMaterno}</td>
+        <td>${caso.cliente.nombre} ${caso.cliente.apellidoPaterno} ${caso.cliente.apellidoMaterno}</td>
         <td>${caso.nombre_demandado} </td>
         <td>${caso.descripcion}</td>
         <td>${caso.fecha_comienzo}</td>

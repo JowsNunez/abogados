@@ -29,7 +29,7 @@ export class CasoDao implements BaseDao<CasoDTO>{
     }
     async findAll(): Promise<CasoDTO[]> {
         try {
-            const casos = await Caso.findAll();
+            const casos = await Caso.findAll({ include: [Abogado, Cliente]});
             const casosDTO = casos.map(caso => caso as CasoDTO)
             return casosDTO
         } catch (err) {
