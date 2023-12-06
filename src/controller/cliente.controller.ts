@@ -50,12 +50,12 @@ export class ClienteController {
         try {
             const clienteDTO = req.body
             const idCliente:number= Number.parseInt(req.params.id);
-            if(clienteDTO.nombre) throw new FieldError({msg:"El nombre es obligatorio",field:'nombre'});
-            if(clienteDTO.apellidoPaterno) throw new FieldError({msg:"El apellido Paterno es obligatorio",field:'apellidoPaterno'});
-            if(clienteDTO.apellidoMaterno) throw new FieldError({msg:"El apellido Materno es obligatorio",field:'apellidoMaterno'});
-            if(clienteDTO.telefono) throw new FieldError({msg:"El telefono es obligatorio",field:'telefono'});
-            if(clienteDTO.correo) throw new FieldError({msg:"El correo es obligatorio",field:'correo'});
-            if(clienteDTO.rfc) throw new FieldError({msg:"El rfc es obligatorio",field:'rfc'});
+            if(!clienteDTO.nombre) throw new FieldError({msg:"El nombre es obligatorio",field:'nombre'});
+            if(!clienteDTO.apellidoPaterno) throw new FieldError({msg:"El apellido Paterno es obligatorio",field:'apellidoPaterno'});
+            if(!clienteDTO.apellidoMaterno) throw new FieldError({msg:"El apellido Materno es obligatorio",field:'apellidoMaterno'});
+            if(!clienteDTO.telefono) throw new FieldError({msg:"El telefono es obligatorio",field:'telefono'});
+            if(!clienteDTO.correo) throw new FieldError({msg:"El correo es obligatorio",field:'correo'});
+            if(!clienteDTO.rfc) throw new FieldError({msg:"El rfc es obligatorio",field:'rfc'});
 
             const cliente = await this.clienteDao.update(idCliente,clienteDTO)
             

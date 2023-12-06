@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar</title>
+    <link rel="stylesheet" href="../css/casos.css">
+    
+</head>
+<body>
+    <header id="heroes"></header>
+
+
+    <form class="formulario" id="formulario" >
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" id="apellidos" name="apellidos" required>
+        
+        
+        <label for="telefono">Número de Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono" pattern="[0-9]{10}" required>
+        
+        <label for="correo">Correo Electrónico:</label>
+        <input type="email" id="correo" name="correo" required>
+        
+        <label for= "rfc">RFC:</label>
+        <input type="text" id="rfc" name="rfc" pattern="[0-9,a-z]{13}" title="Ingresa 13 caracteres alfanumérico"required>
+        
+        <label for="domicilio">Domicilio:</label>
+        <input type="text" id="domicilio" name="domicilio" required>
+        
+        <button type="submit" class="orange-button">Actualizar Datos</button>
+    </form>
+
+
+    
+    <script src="../js/utils.js"></script>
+    <script src="../js/hooks/requests.js"></script>
+    <script>
+        let queries = window.location.search;
+            let params = new URLSearchParams(queries);
+            let id = params.get('id');
+         async function cargarCliente() {
+            
+
+
+           const {data} = await httpGetCliente(id);
+
+           if(data){
+            document.getElementById('nombre').value = data.nombre;
+            document.getElementById('apellidos').value =data.apellidoPaterno +' '+data.apellidoMaterno;
+            document.getElementById('telefono').value = data.telefono;
+            document.getElementById('correo').value = data.correo;
+            document.getElementById('rfc').value = data.rfc;
+            document.getElementById('domicilio').value = data.domicilio;
+           }
+        }
+
+        window.addEventListener('onload',cargarCliente());
+
+        const form = document.getElementById('formulario');
+
+
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const apellidos = form.apellidos.value.split(/\s{1}/);
+    const data = {
+        nombre: form.nombre.value,
+        apellidoPaterno: apellidos[0],
+        apellidoMaterno: apellidos[1],
+        correo: form.correo.value,
+        telefono: form.telefono.value,
+        domicilio: form.domicilio.value,
+        rfc: form.rfc.value
+    }
+    
+    const response = await httpActualizarCliente(id,data);
+
+    if(response.msg){
+        const err =response.data._err;
+        let {field}= err;
+        if(field =='apellidoMaterno'|| field=='apellidoPaterno'){
+            field='apellidos';
+        }
+
+        const input = document.getElementById(field);
+        input.classList.add('is-invalid');
+        return;
+    }
+
+    alert('cliente creado correctamente')
+    form.reset();
+   
+
+})
+
+
+
+
+    </script>
+</body>
+</html>

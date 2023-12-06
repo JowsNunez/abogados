@@ -185,6 +185,12 @@ let cargarEventosChecks=(param)=> {
     const btnEliminar = document.querySelector('#eliminar')
     let checked = []
     let handleActualizar = (id) => {
+        if(param=='clientes'){
+            window.location.href = 'cliente/actualizar.html?id=' + id
+        }
+        if(param=='casos'){
+            window.location.href = 'caso/actualizar.html?id=' + id
+        }
         
     }
     let handleEliminar= async (id)=>{

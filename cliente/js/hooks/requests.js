@@ -39,6 +39,17 @@ async function httpGetClientes(){
     return data;
 }
 
+async function httpGetCliente(id){
+    const response = await fetch(url+'/clientes/'+id, {
+        method: 'GET',
+        headers: {
+            'Content-Type':'application/json'
+        }
+    });
+    const data = await response.json();
+    return data;
+}
+
 async function httpEliminarCliente(id){
     const response = await fetch(url+'/clientes/'+id, {
         method: 'DELETE',

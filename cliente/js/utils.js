@@ -69,10 +69,10 @@ function bindNavbar(){
     <nav>
     <ul id="button">
         <li class="rr"><a href="#">R&R ABOGADOS Y ASOCIADOS</a></li>
-        <li><a href="crearCita.html">CITAS</a></li>
+        <li><a href="/crearCita.html">CITAS</a></li>
         <li><a href="#">EXPEDIENTES</a></li>
-    <li><a href="casos.html">CASOS</a></li>
-    <li><a href="clientes.html">CLIENTES</a></li>   
+    <li><a href="/casos.html">CASOS</a></li>
+    <li><a href="/clientes.html">CLIENTES</a></li>   
 
     <li><a href="#">REPORTES</a></li>
         <li>
