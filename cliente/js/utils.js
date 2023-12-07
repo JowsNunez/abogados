@@ -82,8 +82,12 @@ function bindNavbar(){
                 <button type="submit">Buscar</button>
             </form>
         </li>
+     <li><a id="logout" class='orange-button'>Cerrar Sesión</a></li>   
     </ul>
 </nav>`
+headers.querySelector('#logout').addEventListener('click',()=>{
+    logout();
+});
 }
 
 const formatDate = (fecha) => {
@@ -105,12 +109,22 @@ function handlePages(){
     
 }
 
+function getSesionId(){
+    const auth = localStorage.getItem('auth');
+    if(!auth) return null;
+    const sesion = JSON.parse(auth);
+    if(!sesion) return null;
+    if(!sesion.abogado) return null;
+
+    return sesion.abogado.idAbogado;   
+}	
 function login(auth){
     localStorage.setItem('auth',auth);
 }
 
 function logout(){
     localStorage.removeItem('auth');
+    handlePages()
 }
 
 window.addEventListener("load",()=>{

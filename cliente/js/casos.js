@@ -13,7 +13,7 @@ form.addEventListener('submit', async (e) => {
         nombre_demandado: form.nombre_demandado.value,
         cliente_idCliente: params.get('cliente'),
         // falta mantener  la sesión del abogado
-        abogado_idAbogado: '1',
+        abogado_idAbogado: getSesionId(),
         descripcion: params.get('descripcion'),
         estado: form.estado.value,
         fecha_comienzo: Date.now()

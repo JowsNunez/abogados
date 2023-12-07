@@ -4,16 +4,8 @@ let formCrearCita = () => {
     return `
     <form class="grid-container">
 
-                <!-- Select abogado -->
-                <div class="select-container grid-item">
-                    <div class="left-align">
-                        <label for="abogado">Abogado:</label>
-                        <select id="idAbogado" required>
-                            <option selected="true" disabled="disabled">seleccione Abogado</option>
-
-                        </select>
-                    </div>
-                </div>
+               
+               
                 <!-- Select cliente -->
                 <div class="select-container grid-item">
                     <div class="right-align">

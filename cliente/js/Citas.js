@@ -55,7 +55,7 @@ class Citas {
 
   initializeCrear() {
 
-    this.selectAbogado = document.getElementById("idAbogado");
+    // this.selectAbogado = document.getElementById("idAbogado");
     this.selectCliente = document.getElementById("idCliente");
     this.selectCaso = document.getElementById("idCaso");
     this.selectCubiculo = document.getElementById("numeroCubiculo");
@@ -74,20 +74,12 @@ class Citas {
     this.selectCliente.addEventListener('change', async (e) => {
       const value = e.target.value
       currentSelect.idCliente = value
-
-      if (currentSelect.idCliente != undefined && currentSelect.idAbogado != undefined) {
-        await this.mostrarDatosEnSelector('casos', currentSelect.idCliente, currentSelect.idAbogado)
+      let idAbogado = getSesionId()
+      if (currentSelect.idCliente != undefined && idAbogado != undefined) {
+        await this.mostrarDatosEnSelector('casos', currentSelect.idCliente, idAbogado)
       }
     })
-    this.selectAbogado.addEventListener('change', async (e) => {
-      const value = e.target.value
-      currentSelect.idAbogado = value
-      if (currentSelect.idCliente != undefined && currentSelect.idAbogado != undefined) {
-
-        await this.mostrarDatosEnSelector('casos', currentSelect.idCliente, currentSelect.idAbogado)
-      }
-    })
-    this.mostrarDatosEnSelector('abogados')
+    // this.mostrarDatosEnSelector('abogados')
     this.mostrarDatosEnSelector('clientes')
     this.mostrarDatosEnSelector('cubiculos')
     guardarCitaButton.addEventListener("click", this.crearCita.bind(this));
@@ -214,9 +206,9 @@ class Citas {
         // dependiendo del endpoint se cargan los selectores
 
         switch (auxEndpoint) {
-          case 'abogados':
-            this.mostrarAbogados(data)
-            break;
+          // case 'abogados':
+          //   this.mostrarAbogados(data)
+          //   break;
           case 'clientes':
             this.mostrarClientes(data)
             break;
@@ -295,7 +287,7 @@ class Citas {
     const form = event.target;
     const fecha = this.selectfecha.value;
     const hora = this.selectHora.value;
-    const abogado = this.selectAbogado.value;
+    const abogado = getSesionId();
     const cliente = this.selectCliente.value;
     const caso = this.selectCaso.value;
     const cubiculo = this.selectCubiculo.value;

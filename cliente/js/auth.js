@@ -27,27 +27,30 @@ formIniciarSesion.addEventListener("submit", async (e) => {
         contrasenia
     }
     const data = await httpAuth(body);
-    if(data){
-        const err =response.data._err;
-        let {field}= err;
+    if (data) {
+        const err = data._err;
+        if(data.msg){
+            console.log(data)
+            alert("Error al iniciar sesion")
+            return;
+        }
+        if(!err){
+            login(JSON.stringify(data));
+            handlePages();
+        }
+        let { field } = err;
         
-        if(field =='usuario'){
+        if (field == 'usuario') {
             document.querySelector('#iniciarSesion_username')
             .classList.add('is-invalid');
             return;
         }
-        if( field=='contrasenia'){
+        if (field == 'contrasenia') {
             document.querySelector('#iniciarSesion_password')
             .classList.add('is-invalid');
             return;
         }
-        if(err){
-            alert("Usuario y contraseña invalidos");
-        }
-        login(JSON.stringify(data));
-        handlePages()
         
     }
-
 });
 
