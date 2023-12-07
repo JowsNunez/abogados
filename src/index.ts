@@ -18,6 +18,8 @@ import { ClienteController } from "./controller/cliente.controller";
 import { CubiculoRouter } from "./router/cubiculo.router";
 import { CubiculoDao } from "./data/dao/cubiculo.dao";
 import { CubiculoController } from "./controller/cubiculo.controller";
+import { AuthRouter } from "./router/auth.router";
+import { AuthController } from "./controller/auth.controller";
 
 class Main {
 
@@ -27,6 +29,7 @@ class Main {
     private casoRouter!: CasoRouter
     private clienteRouter!: ClienteRouter
     private cubiculoRouter!: CubiculoRouter
+    private authRouter!: AuthRouter
 
 
     constructor() {
@@ -53,7 +56,7 @@ class Main {
         this.server.use("/casos", this.casoRouter.getRouter())
         this.server.use("/clientes", this.clienteRouter.getRouter())
         this.server.use("/cubiculos", this.cubiculoRouter.getRouter())
-
+        this.server.use("/", this.authRouter.getRouter())
 
     }
 
@@ -86,6 +89,11 @@ class Main {
         return this
     }
 
+    setAuthRouter(authRouter: AuthRouter): Main {
+        this.authRouter = authRouter
+        return this
+    }
+
     build(): Main {
         return this
     }
@@ -99,13 +107,13 @@ const abogadoDao = new AbogadoDao()
 const casoDao = new CasoDao()
 const clienteDao = new ClienteDao()
 const cubiculoDao = new CubiculoDao()
-
 // iniciar Controllers
 const citaController = new CitaController(citaDao)
 const abogadoController = new AbogadoController(abogadoDao)
 const casoController = new CasoController(casoDao)
 const clienteController = new ClienteController(clienteDao)
 const cubiculoController = new CubiculoController(cubiculoDao)
+const authController = new AuthController()
 
 // Iniciar Routers
 const citaRouter = new CitasRouter(citaController)
@@ -113,6 +121,7 @@ const abogadoRouter = new AbogadoRouter(abogadoController)
 const casoRouter = new CasoRouter(casoController)
 const clienteRouter = new ClienteRouter(clienteController)
 const cubiculoRouter = new CubiculoRouter(cubiculoController)
+const authRouter = new AuthRouter(authController)
 
 //
 const main = new Main()
@@ -121,6 +130,7 @@ const main = new Main()
     .setCasoRouter(casoRouter)
     .setCubiculoRouter(cubiculoRouter)
     .setClienteRouter(clienteRouter)
+    .setAuthRouter(authRouter)
     .build()
 
 main.connect()
