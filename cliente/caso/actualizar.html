@@ -15,7 +15,7 @@
     <h1>Actualizar Caso</h1>
     <form class="formulario" id="formulario">
         <label for="cliente">Seleccionar Cliente:</label>
-        <select id="idCliente" name="cliente">
+        <select id="idCliente" name="cliente" disabled>
 
 
         </select>
@@ -26,7 +26,7 @@
         <select id="estado" name="estado">
             <option value="activo">Activo</option>
             <option value="inactivo">Inactivo</option>
-            <option value="completado">Completado</option>
+            <option value="completo">Completo</option>
 
         </select>
 
@@ -48,6 +48,7 @@
         let queries = window.location.search;
         let params = new URLSearchParams(queries);
         let id = params.get('id');
+        let idAbogado;
         async function cargarCaso() {
 
 
@@ -63,7 +64,7 @@
                 document.getElementById('estado').value = data.estado;
                 document.getElementById('nombre_demandado').value = data.nombre_demandado;
                 document.getElementById('descripcion').value = data.descripcion;
-
+                idAbogado=data.abogado_idAbogado;
 
             }
         }
@@ -81,7 +82,7 @@
             const data = {
                 nombre_demandado: form.nombre_demandado.value,
                 cliente_idCliente: form.idCliente.value,
-                abogado_idAbogado: '1',
+                abogado_idAbogado: idAbogado,
                 descripcion: form.descripcion.value,
                 estado: form.estado.value,
                 fecha_comienzo: Date.now()
@@ -90,7 +91,6 @@
 
             const response = await httpActualizarCaso(id,data);
 
-            console.log(response)
             if (response.msg) {
                 const err = response.data._err;
                 let { field } = err;

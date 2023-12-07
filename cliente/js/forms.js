@@ -99,7 +99,7 @@ let formActualizarCita = () => {
     <div class="full-width">
     <div class="center grid-item">
         <label for="motivo">Motivo:</label>
-        <textarea id="motivo" name="motivo" rows="4" width="100px" required></textarea>
+        <textarea id="motivo" name="motivo"  width="100px" required></textarea>
     </div>
   
     
