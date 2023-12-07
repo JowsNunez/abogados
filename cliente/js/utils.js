@@ -64,7 +64,9 @@ async function mostrarCliente(data){
 }
 
 function bindNavbar(){
-    document.getElementById('heroes').innerHTML=`
+    const headers=document.getElementById('heroes')
+    if(!headers) return;
+    headers.innerHTML=`
     <nav>
     <ul id="button">
         <li class="rr"><a href="#">R&R ABOGADOS Y ASOCIADOS</a></li>
@@ -92,4 +94,26 @@ const formatDate = (fecha) => {
     return `${dia} de ${mes} del ${anio}`;
   }
 
-window.addEventListener("load",bindNavbar());
+function handlePages(){
+    const auth = localStorage.getItem('auth');
+    if(!auth !== window.location.href.includes('/login.html')){
+        window.location.href = '/login.html';
+    }
+    if(window.location.href.includes('/login.html')&&auth){
+        window.location.href = '/index.html';
+    }
+    
+}
+
+function login(auth){
+    localStorage.setItem('auth',auth);
+}
+
+function logout(){
+    localStorage.removeItem('auth');
+}
+
+window.addEventListener("load",()=>{
+    bindNavbar()
+    handlePages()
+});

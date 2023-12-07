@@ -43,7 +43,7 @@ export class UsuarioDao implements BaseDao<UsuarioDTO>{
             idUsuario:usuario.idUsuario,
             nombre:usuario.nombre,
             idAbogado:usuario.idAbogado,
-            abogado:usuario.abogado as AbogadoDTO
+            abogado:usuario.abogado 
         }
             console.log(usuarioDTO);
             return resolve(usuarioDTO);

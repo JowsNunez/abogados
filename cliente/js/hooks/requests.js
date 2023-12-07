@@ -116,3 +116,15 @@ async function httpEliminarCaso(id){
     return data;
 }
 
+
+async function httpAuth(body){
+    const response = await fetch(url+'/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(body)
+    });
+    const data = await response.json();
+    return data;
+}
