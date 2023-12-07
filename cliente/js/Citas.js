@@ -112,7 +112,9 @@ class Citas {
       this.citas.innerHTML = 'Ver citas programadas: 0 citas'
       this.citasPendientes.innerHTML = `
       <div class="cita-main-wrapper">
-      No se encontraron citas para la fecha: ${fecha}
+      No se encontraron citas para la fecha:<br> <b>
+      ${formatDate(fecha)}
+      </b>
       </div>`
 
       return

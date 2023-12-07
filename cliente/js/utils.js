@@ -84,4 +84,12 @@ function bindNavbar(){
 </nav>`
 }
 
+const formatDate = (fecha) => {
+    fecha = new Date(fecha);
+    let dia = fecha.getDate();
+    let mes = fecha.toLocaleString('es-ES', { month: 'long' }).charAt(0).toUpperCase() + fecha.toLocaleString('es-ES', { month: 'long' }).slice(1);
+    let anio = fecha.getFullYear(); 
+    return `${dia} de ${mes} del ${anio}`;
+  }
+
 window.addEventListener("load",bindNavbar());
