@@ -6,5 +6,6 @@ import { Cliente } from "./cliente.modelo";
 import {Documento} from "./documento.model";
 import { BaseDao } from "../dao/base.dao";
 import {AbogadoDao} from "../dao/abogado.dao";
+import {UsuarioDao} from "../dao/usuario.dao";
 
 export {Abogado,Cliente,Cubiculo,Caso,Cita,Documento,BaseDao,AbogadoDao}
