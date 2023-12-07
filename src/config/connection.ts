@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
 import { Cita, Abogado, Cliente, Cubiculo, Caso, Documento } from '../data/modelo';
+import Usuario from '../data/modelo/usuario.model';
 const configBd = {
   bd: process.env.BD_NAME || 'abogados',
   user: process.env.BD_USER || 'root',
@@ -13,5 +14,5 @@ export const connection = new Sequelize(configBd.bd, configBd.user, configBd.pas
   dialect: 'mysql'
 })
 
-connection.addModels([Abogado, Cliente, Cubiculo, Caso, Cita, Documento])
+connection.addModels([Abogado, Cliente, Cubiculo, Caso, Cita, Documento,Usuario])
 

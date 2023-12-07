@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { UsuarioDao } from "../data/dao/usuario.dao";
 import FieldError from "../utils/FieldError";
+import UsuarioDTO from "../data/dto/usuario.dto";
 
 export class AuthController{
     private usuarioDao:UsuarioDao;
@@ -14,15 +15,17 @@ export class AuthController{
 
         if(!nombre) throw new FieldError({field:"nombre",msg:"El nombre es requerido"});
         if(!contrasenia) throw new FieldError({field:"contrasenia",msg:"La contraseña es requerida"});
-        const usuario=await this.usuarioDao.findByNombreAndPass(nombre,contrasenia);
-        if(!usuario) return res.status(401).json({msg:"Usuario no encontrado"});
-
+        const usuario:UsuarioDTO=await this.usuarioDao.findByNombreAndPass(nombre,contrasenia);
+        console.log(usuario);
+        
+        if(!usuario) {return res.status(401).json({msg:"Usuario no encontrado"});}
+        
         return res.status(200).json(usuario);
     }catch(err){
         if(err instanceof FieldError){
             return res.status(400).json({field:err.err.field,msg:err.err.msg});
         }
-        return res.status(500).json({msg:"Error interno del servidor"});
+        return res.status(500).json({msg:err});
     }
 
 

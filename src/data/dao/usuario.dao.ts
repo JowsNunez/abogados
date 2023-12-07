@@ -38,8 +38,14 @@ export class UsuarioDao implements BaseDao<UsuarioDTO>{
             if(!usuario.abogado){
                return reject(new Error("Cuenta no vinculada a un abogado"));
             }
-            const usuarioDTO:UsuarioDTO={...usuario,abogado:usuario.abogado};
-
+            
+            const usuarioDTO:UsuarioDTO={
+            idUsuario:usuario.idUsuario,
+            nombre:usuario.nombre,
+            idAbogado:usuario.idAbogado,
+            abogado:usuario.abogado as AbogadoDTO
+        }
+            console.log(usuarioDTO);
             return resolve(usuarioDTO);
             
         });

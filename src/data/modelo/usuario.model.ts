@@ -7,14 +7,18 @@ export class Usuario extends Model<Usuario>{
         type: DataType.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-        allowNull:false
-    })
+        allowNull: false
+      })
     idUsuario: number|undefined;
     @AllowNull(false)
+    @Column(DataType.STRING)
     nombre!: string;
     @AllowNull(false)
+    @Column(DataType.STRING)
     contrasenia!:string;
     @AllowNull(false) 
+    @ForeignKey(() => Abogado)
+    @Column(DataType.INTEGER)
     idAbogado!:number;
     @BelongsTo(()=>Abogado)
     abogado: Abogado|undefined;
